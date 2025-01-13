@@ -111,7 +111,7 @@ export type Restaurant = {
 			party_capacity: number;
 			// WiFi 有無
 			wifi: string;
-			// 	ウェディング･二次会
+			// ウェディング･二次会
 			wedding: string;
 			// コース
 			course: string;
@@ -123,7 +123,7 @@ export type Restaurant = {
 			private_room: string;
 			// 掘りごたつ
 			horigotatsu: string;
-			// 	座敷
+			// 座敷
 			tatami: string;
 			// カード可
 			card: string;
