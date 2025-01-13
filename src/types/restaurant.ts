@@ -1,103 +1,175 @@
 export type Restaurant = {
 	results: {
+		// APIのバージョン
 		api_version: string;
+		// クエリー条件にマッチする、検索結果の全件数
 		results_available: number;
+		// 検索結果の件数
 		results_returned: string;
+		// 検索結果の開始位置
 		results_start: number;
 		shop: {
-			access: string;
+			// お店ID
+			id: string;
+			// 掲載店名
+			name: string;
+			// ロゴ画像
+			logo_image: string;
+			// 掲載店名かな
+			name_kana: string;
+			// 住所
 			address: string;
-			band: string;
-			barrier_free: string;
-			budget: {
-				average: string;
+			// 最寄駅名
+			station_name: string;
+			// 携帯用クーポン掲載 0:あり、1:なし
+			ktai_coupon: string;
+			// 大サービスエリア
+			large_service_area: {
 				code: string;
 				name: string;
 			};
-			budget_memo: string;
-			capacity: number;
-			card: string;
-			catch: string;
-			charter: string;
-			child: string;
-			close: string;
-			coupon_urls: {
-				pc: string;
-				sp: string;
+			// サービスエリア
+			service_area: {
+				code: string;
+				name: string;
 			};
-			course: string;
-			english: string;
-			free_drink: string;
-			free_food: string;
+			// 大エリア
+			large_area: {
+				code: string;
+				name: string;
+			};
+			// 中エリア
+			middle_area: {
+				code: string;
+				name: string;
+			};
+			// 小エリア
+			small_area: {
+				code: string;
+				name: string;
+			};
+			// 緯度（測地系は検索時に指定したもの）
+			lat: number;
+			// 経度（測地系は検索時に指定したもの）
+			lng: number;
+			// お店ジャンル
 			genre: {
 				catch: string;
 				code: string;
 				name: string;
 			};
-			horigotatsu: string;
-			id: string;
-			karaoke: string;
-			ktai_coupon: string;
-			large_area: {
-				code: string;
-				name: string;
-			};
-			large_service_area: {
-				code: string;
-				name: string;
-			};
-			lat: number;
-			lng: number;
-			logo_image: string;
-			lunch: string;
-			middle_area: {
-				code: string;
-				name: string;
-			};
-			midnight: string;
-			mobile_access: string;
-			name: string;
-			name_kana: string;
-			non_smoking: string;
-			open: string;
-			other_memo: string;
-			parking: string;
-			party_capacity: number;
-			pet: string;
-			photo: {
-				mobile: {
-					l: string;
-					s: string;
-				};
-				pc: {
-					l: string;
-					m: string;
-					s: string;
-				};
-				private_room: string;
-			};
-			service_area: {
-				code: string;
-				name: string;
-			};
-			shop_detail_memo: string;
-			show: string;
-			small_area: {
-				code: string;
-				name: string;
-			};
-			station_name: string;
+			// お店サブジャンル
 			sub_genre: {
 				code: string;
 				name: string;
 			};
-			tatami: string;
-			tv: string;
+			// ディナー予算
+			budget: {
+				code: string;
+				name: string;
+				// 平均ディナー予算
+				average: string;
+			};
+			// 料金備考
+			budget_memo: string;
+			// お店キャッチ
+			catch: string;
+			// 総席数
+			capacity: number;
+			// 交通アクセス
+			access: string;
+			// 携帯用交通アクセス
+			mobile_access: string;
+			// 店舗URL
 			urls: {
 				pc: string;
 			};
-			wedding: string;
+			// 写真
+			photo: {
+				// PC向け
+				pc: {
+					// 店舗トップ写真(大）画像URL
+					l: string;
+					// 店舗トップ写真(中）画像URL
+					m: string;
+					// 店舗トップ写真(小）画像URL
+					s: string;
+				};
+				// 携帯向け
+				mobile: {
+					// 店舗トップ写真(大）画像URL
+					l: string;
+					// 店舗トップ写真(小）画像URL
+					s: string;
+				};
+			};
+			// 営業時間
+			open: string;
+			// 定休日
+			close: string;
+			// 	最大宴会収容人数
+			party_capacity: number;
+			// WiFi 有無
 			wifi: string;
+			// 	ウェディング･二次会
+			wedding: string;
+			// コース
+			course: string;
+			// 飲み放題
+			free_drink: string;
+			// 食べ放題
+			free_food: string;
+			// 個室
+			private_room: string;
+			// 掘りごたつ
+			horigotatsu: string;
+			// 	座敷
+			tatami: string;
+			// カード可
+			card: string;
+			// 禁煙席
+			non_smoking: string;
+			// 貸切可
+			charter: string;
+			// 携帯電話OK
+			ktai: string;
+			// 駐車場
+			parking: string;
+			// バリアフリー
+			barrier_free: string;
+			// その他設備
+			other_memo: string;
+			// ソムリエ
+			sommelier: string;
+			// オープンエア
+			open_air: string;
+			// ライブ・ショー
+			show: string;
+			// エンタメ設備
+			equipment: string;
+			// カラオケ
+			karaoke: string;
+			// バンド演奏可
+			band: string;
+			// TV・プロジェクター
+			tv: string;
+			// 英語メニュー
+			english: string;
+			// ペット可
+			pet: string;
+			// お子様連れ
+			child: string;
+			// ランチ
+			lunch: string;
+			// 23時以降も営業
+			midnight: string;
+			// 備考
+			shop_detail_memo: string;
+			// クーポンURL
+			coupon_urls: {
+				pc: string;
+				sp: string;
+			};
 		}[];
 	};
 };
