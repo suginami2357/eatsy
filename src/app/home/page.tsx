@@ -9,6 +9,8 @@ import { useFetchRestaurants } from "~/hooks/fetch/useFetchRestaurants";
 
 export default function HomePage() {
 	const [hasMore, setHasMore] = useState(true);
+	const [selectedId, setSelectedId] = useState<string | undefined>(undefined);
+
 	const {
 		data: restaurants,
 		size,
@@ -18,7 +20,9 @@ export default function HomePage() {
 		pageSize: 10,
 	});
 
-	console.log(size);
+	const handleClick = (id: string) => {
+		setSelectedId(selectedId === id ? undefined : id);
+	};
 
 	const data = restaurants?.flatMap((x) => x.results.shop);
 
@@ -44,7 +48,11 @@ export default function HomePage() {
 							index === 0 ? "mb-2 mx-2" : "m-2",
 						)}
 					>
-						<div className="m-2">
+						<button
+							type="button"
+							className="m-2"
+							onClick={() => handleClick(x.id)}
+						>
 							<img
 								src={x.photo.pc.l}
 								alt={x.name}
@@ -79,7 +87,8 @@ export default function HomePage() {
 									</span>
 								</div>
 							</div>
-						</div>
+							{x.id === selectedId && <div>aaaaaaaaa</div>}
+						</button>
 					</div>
 				))}
 			</InfiniteScroll>
