@@ -3,13 +3,13 @@ import clsx from "clsx";
 import type React from "react";
 import { useState } from "react";
 import { BiChair } from "react-icons/bi";
+import { BsFillCreditCardFill } from "react-icons/bs";
 import { GiMeat } from "react-icons/gi";
 import { IoMdTrain } from "react-icons/io";
 import { IoLocationSharp } from "react-icons/io5";
 import { IoTime } from "react-icons/io5";
-import { MdRestaurant } from "react-icons/md";
+import { MdRestaurant, MdSmokingRooms } from "react-icons/md";
 import { MdModeNight } from "react-icons/md";
-import { PiChairFill } from "react-icons/pi";
 import { RiDrinks2Fill } from "react-icons/ri";
 import { TiLocationArrow } from "react-icons/ti";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -116,22 +116,21 @@ export default function HomePage() {
 								</div>
 							</div>
 							{selectedIds.includes(x.id) && (
-								<div className="mt-4 text-sm">
+								<div className="mt-3 text-sm text-gray-900">
 									<div className="flex items-center">
 										<div className="h-4 w-4 bg-gray-300 rounded-full">
 											<IoLocationSharp size={12} className="text-white m-0.5" />
 										</div>
-
 										<div className="ml-1">{x.address}</div>
 									</div>
 
-									<div className="flex items-center mt-2">
+									<div className="flex items-center mt-1">
 										<div className="h-4 w-4 bg-gray-300 rounded-full">
 											<TiLocationArrow size={12} className="text-white m-0.5" />
 										</div>
 										<div className="ml-1">{x.mobile_access}</div>
 									</div>
-									<div className="flex items-center mt-2">
+									<div className="flex items-center mt-1">
 										<div className="h-4 w-4 bg-gray-300 rounded-full">
 											<IoTime size={12} className="text-white m-0.5" />
 										</div>
@@ -139,30 +138,45 @@ export default function HomePage() {
 											{x.open.replace(/\（.*?\）/g, "")}
 										</div>
 									</div>
-									<div className="flex items-center mt-2">
+									{/* <div className="flex items-center mt-3">
 										<div className="h-4 w-4 bg-gray-300 rounded-full">
 											<BiChair size={12} className="text-white m-0.5" />
 										</div>
 										<div className="ml-1">{x.capacity}席</div>
-									</div>
+									</div> */}
 									<div className="flex items-center mt-2">
+										<div className="h-4 w-4 bg-gray-300 rounded-full">
+											<MdSmokingRooms size={12} className="text-white m-0.5" />
+										</div>
+										<div className="ml-1">
+											{formatNonSmoking(x.non_smoking)}
+										</div>
+									</div>
+									<div className="flex items-center mt-1">
 										<div className="h-4 w-4 bg-gray-300 rounded-full">
 											<GiMeat size={12} className="text-white m-0.5" />
 										</div>
 										<div className="ml-1">
-											食べ放題：{formatYesNo(x.free_food)}
+											食べ放題{formatYesNo(x.free_food)}
 										</div>
 									</div>
-									<div className="flex items-center mt-2">
+									<div className="flex items-center mt-1">
 										<div className="h-4 w-4 bg-gray-300 rounded-full">
 											<RiDrinks2Fill size={12} className="text-white m-0.5" />
 										</div>
 										<div className="ml-1">
-											飲み放題：{formatYesNo(x.free_drink)}
+											飲み放題{formatYesNo(x.free_drink)}
 										</div>
 									</div>
-									<div>クレジットカード：{x.card}</div>
-									<div>喫煙：{formatNonSmoking(x.non_smoking)}</div>
+									<div className="flex items-center mt-1">
+										<div className="h-4 w-4 bg-gray-300 rounded-full">
+											<BsFillCreditCardFill
+												size={12}
+												className="text-white m-0.5"
+											/>
+										</div>
+										<div className="ml-1">クレジットカード{x.card}</div>
+									</div>
 								</div>
 							)}
 						</div>
