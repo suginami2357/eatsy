@@ -2,24 +2,17 @@
 import clsx from "clsx";
 import type React from "react";
 import { useState } from "react";
-import { BiChair } from "react-icons/bi";
-import { BsFillCreditCardFill } from "react-icons/bs";
-import { GiMeat } from "react-icons/gi";
 import { IoMdTrain } from "react-icons/io";
-import { IoLocationSharp } from "react-icons/io5";
 import { IoTime } from "react-icons/io5";
-import { MdRestaurant, MdSmokingRooms } from "react-icons/md";
+import { MdRestaurant } from "react-icons/md";
 import { MdModeNight } from "react-icons/md";
-import { RiDrinks2Fill } from "react-icons/ri";
 import { TiLocationArrow } from "react-icons/ti";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useFetchRestaurants } from "~/hooks/fetch/useFetchRestaurants";
-import { formatYesNo } from "~/utils/format";
-import { formatNonSmoking } from "~/utils/restaurant";
+import { formatAccess } from "~/utils/restaurant";
 
 export default function HomePage() {
 	const [hasMore, setHasMore] = useState(true);
-	const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
 	const {
 		data: restaurants,
@@ -29,10 +22,6 @@ export default function HomePage() {
 		setHasMore,
 		pageSize: 10,
 	});
-
-	const handleClick = (id: string) => {
-		setSelectedIds((prev) => [...prev, id]);
-	};
 
 	const handleKeyDown = (
 		e: React.KeyboardEvent<HTMLElement>,
@@ -66,41 +55,31 @@ export default function HomePage() {
 							index === 0 ? "mb-2 mx-2" : "m-2",
 						)}
 					>
-						<div className="m-2">
+						<div className="m-2 text-xs text-gray-600">
 							<img
-								className={clsx(
-									"h-[21dvh] w-dvw rounded object-cover",
-									!selectedIds.includes(x.id) && "cursor-pointer",
-								)}
+								className={clsx("h-[21dvh] w-dvw rounded object-cover")}
 								src={x.photo.pc.l}
 								alt={x.name}
-								onClick={() => handleClick(x.id)}
-								onKeyDown={(e) => handleKeyDown(e, x.id, handleClick)}
 							/>
-							<div
-								className={clsx(
-									"text-base font-bold my-1",
-									!selectedIds.includes(x.id) && "cursor-pointer",
-								)}
-								onClick={() => handleClick(x.id)}
-								onKeyDown={(e) => handleKeyDown(e, x.id, handleClick)}
-							>
-								{x.name}
+							<div className="font-bold my-1 text-base text-gray-900">
+								<a href={x.urls.pc} target="_blank" rel="noopener noreferrer">
+									{x.name}
+								</a>
 							</div>
 							<div className="flex gap-x-4">
-								<div className="flex items-center text-xs text-gray-600">
+								<div className="flex">
 									<div className="h-4 w-4 bg-gray-300 rounded-full">
 										<MdRestaurant size={12} className="text-white m-0.5" />
 									</div>
 									<span className="ml-1">{x.genre.name}</span>
 								</div>
-								<div className="flex items-center text-xs text-gray-600">
+								<div className="flex">
 									<div className="h-4 w-4 bg-gray-300 rounded-full">
 										<IoMdTrain size={12} className="text-white m-0.5" />
 									</div>
 									<span className="ml-1">{x.station_name}駅</span>
 								</div>
-								<div className="flex items-center text-xs text-gray-600">
+								<div className="flex">
 									<div className="h-4 w-4 bg-gray-300 rounded-full">
 										<MdModeNight size={12} className="text-white m-0.5" />
 									</div>
@@ -115,44 +94,43 @@ export default function HomePage() {
 									</span>
 								</div>
 							</div>
-							{selectedIds.includes(x.id) && (
-								<div className="mt-3 text-sm text-gray-900">
-									<div className="flex items-center">
+
+							<div className="mt-2 text-xs text-gray-600">
+								<div className="flex">
+									<div className="h-4 w-4 bg-gray-300 rounded-full">
+										<TiLocationArrow size={16} className="text-white" />
+									</div>
+									<div className="ml-1">{formatAccess(x.mobile_access)}</div>
+								</div>
+								<div className="flex mt-1">
+									<div className="h-4 w-4 bg-gray-300 rounded-full">
+										<IoTime size={12} className="text-white m-0.5" />
+									</div>
+									<div className="ml-1">{x.open.replace(/\（.*?\）/g, "")}</div>
+								</div>
+
+								{/* <div className="flex items-center">
 										<div className="h-4 w-4 bg-gray-300 rounded-full">
 											<IoLocationSharp size={12} className="text-white m-0.5" />
 										</div>
 										<div className="ml-1">{x.address}</div>
-									</div>
+									</div> */}
 
-									<div className="flex items-center mt-1">
-										<div className="h-4 w-4 bg-gray-300 rounded-full">
-											<TiLocationArrow size={12} className="text-white m-0.5" />
-										</div>
-										<div className="ml-1">{x.mobile_access}</div>
-									</div>
-									<div className="flex items-center mt-1">
-										<div className="h-4 w-4 bg-gray-300 rounded-full">
-											<IoTime size={12} className="text-white m-0.5" />
-										</div>
-										<div className="ml-1">
-											{x.open.replace(/\（.*?\）/g, "")}
-										</div>
-									</div>
-									{/* <div className="flex items-center mt-3">
+								{/* <div className="flex items-center mt-3">
 										<div className="h-4 w-4 bg-gray-300 rounded-full">
 											<BiChair size={12} className="text-white m-0.5" />
 										</div>
 										<div className="ml-1">{x.capacity}席</div>
 									</div> */}
-									<div className="flex items-center mt-2">
+								{/* <div className="flex items-center mt-2">
 										<div className="h-4 w-4 bg-gray-300 rounded-full">
 											<MdSmokingRooms size={12} className="text-white m-0.5" />
 										</div>
 										<div className="ml-1">
 											{formatNonSmoking(x.non_smoking)}
 										</div>
-									</div>
-									<div className="flex items-center mt-1">
+									</div> */}
+								{/* <div className="flex items-center mt-1">
 										<div className="h-4 w-4 bg-gray-300 rounded-full">
 											<GiMeat size={12} className="text-white m-0.5" />
 										</div>
@@ -167,8 +145,8 @@ export default function HomePage() {
 										<div className="ml-1">
 											飲み放題{formatYesNo(x.free_drink)}
 										</div>
-									</div>
-									<div className="flex items-center mt-1">
+									</div> */}
+								{/* <div className="flex items-center mt-1">
 										<div className="h-4 w-4 bg-gray-300 rounded-full">
 											<BsFillCreditCardFill
 												size={12}
@@ -176,9 +154,8 @@ export default function HomePage() {
 											/>
 										</div>
 										<div className="ml-1">クレジットカード{x.card}</div>
-									</div>
-								</div>
-							)}
+									</div> */}
+							</div>
 						</div>
 					</div>
 				))}
