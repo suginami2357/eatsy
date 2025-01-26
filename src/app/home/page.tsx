@@ -18,18 +18,11 @@ export default function HomePage() {
 		data: restaurants,
 		size,
 		setSize,
+		isLoading,
 	} = useFetchRestaurants({
 		setHasMore,
 		pageSize: 10,
 	});
-
-	const handleKeyDown = (
-		e: React.KeyboardEvent<HTMLElement>,
-		id: string,
-		handleClick: (id: string) => void,
-	) => {
-		e.key === "Enter" && handleClick(id);
-	};
 
 	const data = restaurants?.flatMap((x) => x.results.shop);
 
@@ -41,11 +34,22 @@ export default function HomePage() {
 					ホットペッパーグルメ Webサービス
 				</a>
 			</div>
+
 			<InfiniteScroll
 				dataLength={data?.length || 0}
 				next={() => setSize(size + 1)}
 				hasMore={hasMore}
-				loader={<div />}
+				loader={
+					isLoading ? (
+						<div className="flex h-[calc(100dvh-8px)] w-[calc(100dvw-16px)] items-center justify-center mx-2 bg-white rounded">
+							<div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500" />
+						</div>
+					) : (
+						<div className="flex h-16 w-[calc(100dvw-16px)] items-center justify-center mx-2 bg-white rounded">
+							<div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500" />
+						</div>
+					)
+				}
 			>
 				{data?.map((x, index) => (
 					<div
