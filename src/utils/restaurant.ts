@@ -1,4 +1,40 @@
-export function formatNonSmoking(value: string): string {
+import type { Restaurant } from "~/types/restaurant";
+
+export function formatData(restaurants: Restaurant[] | undefined) {
+	if (!restaurants) return [];
+
+	const data = restaurants?.flatMap((x) => x.results.shop);
+
+	const result = data
+		.map((item) => {
+			return {
+				...item,
+				genre: {
+					code: item.genre.code,
+					name: item.genre.name.replace(
+						"アジア・エスニック料理",
+						"エスニック料理",
+					),
+					catch: item.genre.catch,
+				},
+				station_name: `${item.station_name}駅`,
+				budget: {
+					code: item.budget.code,
+					name: `～${Number(
+						item.budget.name.replace("円", "").split("～")?.[1],
+					).toLocaleString()}円`,
+					average: Number(item.budget.average),
+				},
+				mobile_access: formatAccess(item.mobile_access),
+				open: item.open.replace(/\（.*?\）/g, ""),
+				non_smoking: formatNonSmoking(item.non_smoking),
+			};
+		})
+		.filter((x) => Object.values(x).every((value) => value !== undefined));
+	return result;
+}
+
+function formatNonSmoking(value: string): string | undefined {
 	switch (value) {
 		case "禁煙席なし":
 			return "全席喫煙可";
@@ -7,18 +43,16 @@ export function formatNonSmoking(value: string): string {
 		case "全面禁煙":
 			return "全席禁煙";
 		default:
-			return "-";
+			return undefined;
 	}
 }
 
-export function formatAccess(value: string): string {
+function formatAccess(value: string): string | undefined {
 	let result = value;
 
-	const keywords = ["駅", "徒歩", "分", "秒", "m", "階", "F"];
-
 	// キーワードが含まれて無ければ "-" を返す
-	if (!keywords.some((keyword) => result.includes(keyword))) {
-		return "-";
+	if (!["駅", "徒歩"].some((keyword) => result.includes(keyword))) {
+		return undefined;
 	}
 
 	// "," →　"/" に変換
@@ -31,8 +65,10 @@ export function formatAccess(value: string): string {
 
 	// ◆♪,☆★●◎!※で分割してキーワードが無ければ削除
 	result = result
-		.split(/◆|♪|,|☆|★|●|◎|!|※/)
-		.filter((part) => keywords.some((x) => part.includes(x)))
+		.split(/◆|♪|,|☆|★|●|◎|!|※|｡/)
+		.filter((part) =>
+			["駅", "徒歩", "分", "秒", "m", "階", "F"].some((x) => part.includes(x)),
+		)
 		.join("");
 
 	// 一番最後の"分","秒"より後ろを削除

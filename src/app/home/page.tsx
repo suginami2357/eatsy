@@ -9,7 +9,7 @@ import { MdModeNight } from "react-icons/md";
 import { TiLocationArrow } from "react-icons/ti";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useFetchRestaurants } from "~/hooks/fetch/useFetchRestaurants";
-import { formatAccess } from "~/utils/restaurant";
+import { formatData } from "~/utils/restaurant";
 
 export default function HomePage() {
 	const [hasMore, setHasMore] = useState(true);
@@ -24,7 +24,7 @@ export default function HomePage() {
 		pageSize: 10,
 	});
 
-	const data = restaurants?.flatMap((x) => x.results.shop);
+	const data = formatData(restaurants);
 
 	return (
 		<div className="flex flex-col bg-gray-200 items-center">
@@ -81,21 +81,13 @@ export default function HomePage() {
 									<div className="h-4 w-4 bg-gray-300 rounded-full">
 										<IoMdTrain size={12} className="text-white m-0.5" />
 									</div>
-									<span className="ml-1">{x.station_name}駅</span>
+									<span className="ml-1">{x.station_name}</span>
 								</div>
 								<div className="flex">
 									<div className="h-4 w-4 bg-gray-300 rounded-full">
 										<MdModeNight size={12} className="text-white m-0.5" />
 									</div>
-									<span className="ml-1">
-										<span>～</span>
-										<span>
-											{Number(
-												x.budget.name.replace("円", "").split("～")?.[1],
-											).toLocaleString()}
-										</span>
-										<span>円</span>
-									</span>
+									<span className="ml-1">{x.budget.name}</span>
 								</div>
 							</div>
 
@@ -104,13 +96,13 @@ export default function HomePage() {
 									<div className="h-4 w-4 bg-gray-300 rounded-full">
 										<TiLocationArrow size={16} className="text-white" />
 									</div>
-									<div className="ml-1">{formatAccess(x.mobile_access)}</div>
+									<div className="ml-1">{x.mobile_access}</div>
 								</div>
 								<div className="flex mt-1">
 									<div className="h-4 w-4 bg-gray-300 rounded-full">
 										<IoTime size={12} className="text-white m-0.5" />
 									</div>
-									<div className="ml-1">{x.open.replace(/\（.*?\）/g, "")}</div>
+									<div className="ml-1">{x.open}</div>
 								</div>
 
 								{/* <div className="flex items-center">
