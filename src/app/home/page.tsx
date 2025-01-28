@@ -41,11 +41,11 @@ export default function HomePage() {
 				hasMore={hasMore}
 				loader={
 					isLoading ? (
-						<div className="flex h-[calc(100dvh-8px)] w-[calc(100dvw-16px)] items-center justify-center mx-2 bg-white rounded">
+						<div className="flex h-[calc(100dvh-8px)] w-[calc(100dvw-16px)] max-w-md items-center justify-center mx-2 bg-white rounded">
 							<div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500" />
 						</div>
 					) : (
-						<div className="flex h-16 w-[calc(100dvw-16px)] items-center justify-center mx-2 bg-white rounded">
+						<div className="flex h-16 w-[calc(100dvw-16px)] max-w-md items-center justify-center mx-2 bg-white rounded">
 							<div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500" />
 						</div>
 					)
