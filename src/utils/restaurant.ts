@@ -17,6 +17,7 @@ export function formatData(restaurants: Restaurant[] | undefined) {
 					),
 					catch: item.genre.catch,
 				},
+				card: formatCard(item.card),
 				station_name: `${item.station_name}駅`,
 				budget: {
 					code: item.budget.code,
@@ -32,6 +33,17 @@ export function formatData(restaurants: Restaurant[] | undefined) {
 		})
 		.filter((x) => Object.values(x).every((value) => value !== undefined));
 	return result;
+}
+
+function formatCard(value: string): string | undefined {
+	switch (value) {
+		case "利用可":
+			return "カード決済可";
+		case "利用不可":
+			return "現金のみ";
+		default:
+			return undefined;
+	}
 }
 
 function formatNonSmoking(value: string): string | undefined {

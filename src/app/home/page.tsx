@@ -1,17 +1,24 @@
 "use client";
+import * as turf from "@turf/turf";
 import clsx from "clsx";
 import type React from "react";
 import { useState } from "react";
+import { BsFillCreditCardFill } from "react-icons/bs";
 import { IoMdTrain } from "react-icons/io";
 import { IoTime } from "react-icons/io5";
 import { MdRestaurant } from "react-icons/md";
 import { MdModeNight } from "react-icons/md";
 import { TiLocationArrow } from "react-icons/ti";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { useGeolocation } from "react-use";
 import { useFetchRestaurants } from "~/hooks/fetch/useFetchRestaurants";
 import { formatData } from "~/utils/restaurant";
 
 export default function HomePage() {
+	const state = useGeolocation({
+		enableHighAccuracy: true,
+	});
+
 	const [hasMore, setHasMore] = useState(true);
 
 	const {
@@ -79,15 +86,18 @@ export default function HomePage() {
 								</div>
 								<div className="flex">
 									<div className="h-4 w-4 bg-gray-300 rounded-full">
-										<IoMdTrain size={12} className="text-white m-0.5" />
-									</div>
-									<span className="ml-1">{x.station_name}</span>
-								</div>
-								<div className="flex">
-									<div className="h-4 w-4 bg-gray-300 rounded-full">
 										<MdModeNight size={12} className="text-white m-0.5" />
 									</div>
 									<span className="ml-1">{x.budget.name}</span>
+								</div>
+								<div className="flex">
+									<div className="h-4 w-4 bg-gray-300 rounded-full">
+										<BsFillCreditCardFill
+											size={12}
+											className="text-white m-0.5"
+										/>
+									</div>
+									<span className="ml-1">{x.card}</span>
 								</div>
 							</div>
 
@@ -98,12 +108,12 @@ export default function HomePage() {
 									</div>
 									<div className="ml-1">{x.mobile_access}</div>
 								</div>
-								<div className="flex mt-1">
+								{/* <div className="flex mt-1">
 									<div className="h-4 w-4 bg-gray-300 rounded-full">
 										<IoTime size={12} className="text-white m-0.5" />
 									</div>
 									<div className="ml-1">{x.open}</div>
-								</div>
+								</div> */}
 
 								{/* <div className="flex items-center">
 										<div className="h-4 w-4 bg-gray-300 rounded-full">
