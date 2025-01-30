@@ -1,25 +1,23 @@
 "use client";
-import * as turf from "@turf/turf";
 import clsx from "clsx";
 import type React from "react";
 import { useState } from "react";
 import { BsFillCreditCardFill } from "react-icons/bs";
+import { FaLocationDot } from "react-icons/fa6";
 import { IoMdTrain } from "react-icons/io";
-import { IoTime } from "react-icons/io5";
-import { MdRestaurant } from "react-icons/md";
+import { IoLocationSharp, IoTime } from "react-icons/io5";
+import { MdLocationOn, MdRestaurant } from "react-icons/md";
 import { MdModeNight } from "react-icons/md";
 import { TiLocationArrow } from "react-icons/ti";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useGeolocation } from "react-use";
 import { useFetchRestaurants } from "~/hooks/fetch/useFetchRestaurants";
 import { formatData } from "~/utils/restaurant";
 
 export default function HomePage() {
-	const state = useGeolocation({
-		enableHighAccuracy: true,
-	});
-
 	const [hasMore, setHasMore] = useState(true);
+	const [position, setPosition] = useState<GeolocationPosition>();
+
+	console.log("position", position);
 
 	const {
 		data: restaurants,
@@ -32,6 +30,16 @@ export default function HomePage() {
 	});
 
 	const data = formatData(restaurants);
+
+	const handleLocationButtonClick = () => {
+		navigator.geolocation.getCurrentPosition(
+			(position) => {
+				setPosition(position);
+			},
+			undefined,
+			{ enableHighAccuracy: true },
+		);
+	};
 
 	return (
 		<div className="flex flex-col bg-gray-200 items-center">
@@ -92,12 +100,9 @@ export default function HomePage() {
 								</div>
 								<div className="flex">
 									<div className="h-4 w-4 bg-gray-300 rounded-full">
-										<BsFillCreditCardFill
-											size={12}
-											className="text-white m-0.5"
-										/>
+										<IoLocationSharp size={12} className="text-white m-0.5" />
 									</div>
-									<span className="ml-1">{x.card}</span>
+									<span className="ml-1">現在地から - m</span>
 								</div>
 							</div>
 

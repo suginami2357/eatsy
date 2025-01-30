@@ -11,10 +11,9 @@ export function formatData(restaurants: Restaurant[] | undefined) {
 				...item,
 				genre: {
 					code: item.genre.code,
-					name: item.genre.name.replace(
-						"アジア・エスニック料理",
-						"エスニック料理",
-					),
+					name: item.genre.name
+						.split("・")
+						.reduce((a, b) => (a.length > b.length ? a : b)),
 					catch: item.genre.catch,
 				},
 				card: formatCard(item.card),
