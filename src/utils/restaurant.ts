@@ -1,3 +1,4 @@
+import * as turf from "@turf/turf";
 import type { Restaurant } from "~/types/restaurant";
 
 export function formatData(restaurants: Restaurant[] | undefined) {
@@ -100,4 +101,26 @@ function formatAccess(value: string): string | undefined {
 	}
 
 	return result;
+}
+
+export function formatDistance(
+	position: GeolocationPosition | undefined,
+	lng: number,
+	lat: number,
+) {
+	if (position === undefined) return " - m";
+
+	const referencePoint = [lng, lat];
+
+	const userPoint = [
+		position?.coords.longitude || 0,
+		position?.coords.latitude || 0,
+	];
+
+	const distance = Math.floor(
+		turf.distance(referencePoint, userPoint, { units: "meters" }),
+	);
+	return distance < 1000
+		? `${distance.toLocaleString()}m`
+		: `${Math.floor(distance / 1000).toLocaleString()}km`;
 }

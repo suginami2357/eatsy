@@ -1,23 +1,24 @@
 "use client";
+import * as turf from "@turf/turf";
 import clsx from "clsx";
+import { motion } from "framer-motion";
 import type React from "react";
 import { useState } from "react";
 import { BsFillCreditCardFill } from "react-icons/bs";
 import { FaLocationDot } from "react-icons/fa6";
 import { IoMdTrain } from "react-icons/io";
 import { IoLocationSharp, IoTime } from "react-icons/io5";
+import { LuRefreshCw } from "react-icons/lu";
 import { MdLocationOn, MdRestaurant } from "react-icons/md";
 import { MdModeNight } from "react-icons/md";
 import { TiLocationArrow } from "react-icons/ti";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useFetchRestaurants } from "~/hooks/fetch/useFetchRestaurants";
-import { formatData } from "~/utils/restaurant";
+import { formatData, formatDistance } from "~/utils/restaurant";
 
 export default function HomePage() {
 	const [hasMore, setHasMore] = useState(true);
 	const [position, setPosition] = useState<GeolocationPosition>();
-
-	console.log("position", position);
 
 	const {
 		data: restaurants,
@@ -27,6 +28,7 @@ export default function HomePage() {
 	} = useFetchRestaurants({
 		setHasMore,
 		pageSize: 10,
+		position,
 	});
 
 	const data = formatData(restaurants);
@@ -102,7 +104,16 @@ export default function HomePage() {
 									<div className="h-4 w-4 bg-gray-300 rounded-full">
 										<IoLocationSharp size={12} className="text-white m-0.5" />
 									</div>
-									<span className="ml-1">現在地から - m</span>
+									<span className="ml-1">
+										現在地から{formatDistance(position, x.lng, x.lat)}
+									</span>
+									<motion.button
+										onClick={handleLocationButtonClick}
+										whileTap={{ rotate: 720 }}
+										className="ml-1 p-1 bg-blue-500 text-white rounded-xl"
+									>
+										<LuRefreshCw size={8} />
+									</motion.button>
 								</div>
 							</div>
 
