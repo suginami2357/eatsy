@@ -212,9 +212,16 @@ export default function HomePage() {
 				)}
 			>
 				<div className="bg-white w-80 h-full shadow-lg">
-					<div className="p-4">
-						{/* モーダルのコンテンツ */}
-						<h2 className="text-xl font-bold">モーダルのタイトル</h2>
+					<div>
+						<h2 className="py-8 text-center text-2xl font-bold">検索</h2>
+						<div className="py-12 px-4 bg-yellow-50">
+							<button
+								type="button"
+								className="w-full h-12 bg-green-600 text-white rounded-full"
+							>
+								現在地から探す
+							</button>
+						</div>
 						<p>モーダルのコンテンツ</p>
 					</div>
 				</div>
