@@ -44,8 +44,8 @@ export default function HomePage() {
 	};
 
 	return (
-		<div className="flex flex-col bg-gray-200 items-center">
-			<div className="h-2 text-[5px] text-white">
+		<div className="flex flex-col items-center">
+			<div className="h-2 text-[6px] text-gray-600">
 				Powered by
 				<a href="http://webservice.recruit.co.jp/">
 					ホットペッパーグルメ Webサービス
@@ -57,22 +57,22 @@ export default function HomePage() {
 				next={() => setSize(size + 1)}
 				hasMore={hasMore}
 				loader={
-					isLoading ? (
-						<div className="flex h-[calc(100dvh-8px)] w-[calc(100dvw-16px)] max-w-md items-center justify-center mx-2 bg-white rounded">
-							<div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500" />
-						</div>
-					) : (
-						<div className="flex h-16 w-[calc(100dvw-16px)] max-w-md items-center justify-center mx-2 bg-white rounded">
-							<div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500" />
-						</div>
-					)
+					// UIが固まったら animate-pulse を使用する
+					<div
+						className={clsx(
+							"flex items-center justify-center",
+							isLoading ? "h-[calc(100dvh-8px)]" : "h-16",
+						)}
+					>
+						<div className="w-10 h-10 border-4 border-t-transparent rounded-full animate-spin" />
+					</div>
 				}
 			>
 				{data?.map((x, index) => (
 					<div
 						key={x.id}
 						className={clsx(
-							"flex flex-col max-w-md bg-white rounded",
+							"flex flex-col max-w-md bg-white shadow-md rounded",
 							index === 0 ? "mb-2 mx-2" : "m-2",
 						)}
 					>
@@ -96,11 +96,17 @@ export default function HomePage() {
 								</div>
 								<div className="flex">
 									<div className="h-4 w-4 bg-gray-300 rounded-full">
+										<IoLocationSharp size={12} className="text-white m-0.5" />
+									</div>
+									<span className="ml-1">{x.middle_area.name}</span>
+								</div>
+								{/* <div className="flex">
+									<div className="h-4 w-4 bg-gray-300 rounded-full">
 										<MdModeNight size={12} className="text-white m-0.5" />
 									</div>
 									<span className="ml-1">{x.budget.name}</span>
-								</div>
-								<div className="flex">
+								</div> */}
+								{/* <div className="flex">
 									<div className="h-4 w-4 bg-gray-300 rounded-full">
 										<IoLocationSharp size={12} className="text-white m-0.5" />
 									</div>
@@ -114,7 +120,7 @@ export default function HomePage() {
 									>
 										<LuRefreshCw size={8} />
 									</motion.button>
-								</div>
+								</div> */}
 							</div>
 
 							<div className="mt-2 text-xs text-gray-600">
