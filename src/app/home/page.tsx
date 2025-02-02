@@ -60,7 +60,7 @@ export default function HomePage() {
 					// UIが固まったら animate-pulse を使用する
 					<div
 						className={clsx(
-							"flex items-center justify-center",
+							"flex w-[100dvw] items-center justify-center",
 							isLoading ? "h-[calc(100dvh-8px)]" : "h-16",
 						)}
 					>
