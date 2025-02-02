@@ -18,7 +18,7 @@ export const useFetchRestaurants = ({
 			return null;
 		}
 		const query = position
-			? `lat=${position.coords.latitude}&lng=${position.coords.longitude}&range=1`
+			? `lat=${position.coords.latitude}&lng=${position.coords.longitude}&range=5`
 			: "large_area=Z011";
 
 		return `/api/restaurants?${query}&start=${pageIndex * pageSize + 1}&count=${pageSize}`;

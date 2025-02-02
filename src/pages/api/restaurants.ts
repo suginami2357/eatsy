@@ -11,25 +11,14 @@ export default async function handler(
 		}
 
 		// クエリパラメータを動的に構築
-		const queryParams = new URLSearchParams({ key: apiKey, format: "json" });
-
-		// 他のクエリパラメータを追加
-		// const otherParams = req.query;
+		const params = new URLSearchParams({ key: apiKey, format: "json" });
 		for (const key of Object.keys(req.query)) {
-			if (req.query[key]) {
-				queryParams.append(key, req.query[key].toString());
-			}
+			req.query[key] && params.append(key, req.query[key].toString());
 		}
 
-		// const { range } = req.query;
-
 		const response = await fetch(
-			`https://webservice.recruit.co.jp/hotpepper/gourmet/v1/?${queryParams.toString()}`,
+			`https://webservice.recruit.co.jp/hotpepper/gourmet/v1/?${params.toString()}`,
 		);
-
-		// const response = await fetch(
-		// 	`https://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=${apiKey}&format=json&large_area=${large_area}&start=${start}&count=${count}`,
-		// );
 
 		if (!response.ok) {
 			throw new Error(`API request failed with status ${response.status}`);
@@ -38,7 +27,6 @@ export default async function handler(
 		const data = await response.json();
 		res.status(200).json(data);
 	} catch (error) {
-		console.error("Error fetching data:", error);
 		res.status(500).json({ error: "Internal Server Error" });
 	}
 }
