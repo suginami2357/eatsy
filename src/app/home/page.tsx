@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import type React from "react";
 import { useState } from "react";
 import { BsFillCreditCardFill } from "react-icons/bs";
+import { BsSearch } from "react-icons/bs";
 import { FaChevronLeft, FaChevronRight, FaSearch } from "react-icons/fa";
 import { FaCircleChevronRight, FaLocationDot } from "react-icons/fa6";
 import { IoMdTrain } from "react-icons/io";
@@ -213,11 +214,25 @@ export default function HomePage() {
 			>
 				<div className="bg-white w-80 h-full shadow-lg">
 					<div>
-						<h2 className="py-8 text-center text-2xl font-bold">検索</h2>
+						<div className="ml-8 my-20 flex items-center">
+							<div>
+								<BsSearch size={18} className="text-gray-500" />
+							</div>
+							<div>
+								<input
+									placeholder="検索"
+									autoCorrect="off"
+									autoCapitalize="off"
+									autoComplete="off"
+									spellCheck="false"
+									className="ml-3 w-64 text-2xl font-bold"
+								/>
+							</div>
+						</div>
 						<div className="py-12 px-4 bg-yellow-50">
 							<button
 								type="button"
-								className="w-full h-12 bg-green-600 text-white rounded-full"
+								className="w-full h-12 bg-green-600 text-white rounded-full shadow-md"
 							>
 								現在地から探す
 							</button>
