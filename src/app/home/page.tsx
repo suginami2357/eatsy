@@ -28,6 +28,8 @@ export default function HomePage() {
 		size,
 		setSize,
 		isLoading,
+		isValidating,
+		mutate,
 	} = useFetchRestaurants({
 		setHasMore,
 		pageSize: 10,
@@ -44,6 +46,8 @@ export default function HomePage() {
 			undefined,
 			{ enableHighAccuracy: true },
 		);
+		mutate();
+		setIsModalOpen(false);
 	};
 
 	return (
@@ -97,32 +101,30 @@ export default function HomePage() {
 									</div>
 									<span className="ml-1">{x.genre.name}</span>
 								</div>
-								<div className="flex">
-									<div className="h-4 w-4 bg-gray-300 rounded-full">
-										<IoLocationSharp size={12} className="text-white m-0.5" />
+
+								{position ? (
+									<div className="flex">
+										<div className="h-4 w-4 bg-gray-300 rounded-full">
+											<IoLocationSharp size={12} className="text-white m-0.5" />
+										</div>
+										<span className="ml-1">
+											現在地から{formatDistance(position, x.lng, x.lat)}
+										</span>
 									</div>
-									<span className="ml-1">{x.middle_area.name}</span>
-								</div>
+								) : (
+									<div className="flex">
+										<div className="h-4 w-4 bg-gray-300 rounded-full">
+											<IoLocationSharp size={12} className="text-white m-0.5" />
+										</div>
+										<span className="ml-1">{x.middle_area.name}</span>
+									</div>
+								)}
+
 								{/* <div className="flex">
 									<div className="h-4 w-4 bg-gray-300 rounded-full">
 										<MdModeNight size={12} className="text-white m-0.5" />
 									</div>
 									<span className="ml-1">{x.budget.name}</span>
-								</div> */}
-								{/* <div className="flex">
-									<div className="h-4 w-4 bg-gray-300 rounded-full">
-										<IoLocationSharp size={12} className="text-white m-0.5" />
-									</div>
-									<span className="ml-1">
-										現在地から{formatDistance(position, x.lng, x.lat)}
-									</span>
-									<motion.button
-										onClick={handleLocationButtonClick}
-										whileTap={{ rotate: 720 }}
-										className="ml-1 p-1 bg-blue-500 text-white rounded-xl"
-									>
-										<LuRefreshCw size={8} />
-									</motion.button>
 								</div> */}
 							</div>
 
@@ -225,7 +227,7 @@ export default function HomePage() {
 									autoCapitalize="off"
 									autoComplete="off"
 									spellCheck="false"
-									className="ml-3 w-64 text-2xl font-bold"
+									className="ml-3 w-64 text-2xl font-bold outline-none"
 								/>
 							</div>
 						</div>
@@ -233,6 +235,7 @@ export default function HomePage() {
 							<button
 								type="button"
 								className="w-full h-12 bg-green-600 text-white rounded-full shadow-md"
+								onClick={handleLocationButtonClick}
 							>
 								現在地から探す
 							</button>
