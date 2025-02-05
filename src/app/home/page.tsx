@@ -1,7 +1,5 @@
 "use client";
-import * as turf from "@turf/turf";
 import clsx from "clsx";
-import { motion } from "framer-motion";
 import type React from "react";
 import { useState } from "react";
 import { BsFillCreditCardFill } from "react-icons/bs";
@@ -20,6 +18,7 @@ import { formatData, formatDistance } from "~/utils/restaurant";
 
 export default function HomePage() {
 	const [hasMore, setHasMore] = useState(true);
+	const [keyword, setKeyword] = useState("");
 	const [position, setPosition] = useState<GeolocationPosition>();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -28,15 +27,23 @@ export default function HomePage() {
 		size,
 		setSize,
 		isLoading,
-		isValidating,
 		mutate,
 	} = useFetchRestaurants({
 		setHasMore,
 		pageSize: 10,
+		keyword,
 		position,
 	});
 
 	const data = formatData(restaurants);
+
+	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+		if (event.key === "Enter") {
+			setKeyword((event.target as HTMLInputElement).value);
+			mutate();
+			setIsModalOpen(false);
+		}
+	};
 
 	const handleLocationButtonClick = () => {
 		navigator.geolocation.getCurrentPosition(
@@ -228,6 +235,7 @@ export default function HomePage() {
 									autoComplete="off"
 									spellCheck="false"
 									className="ml-3 w-64 text-2xl font-bold outline-none"
+									onKeyDown={handleKeyDown}
 								/>
 							</div>
 						</div>
