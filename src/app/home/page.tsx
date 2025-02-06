@@ -46,6 +46,11 @@ export default function HomePage() {
 	};
 
 	const handleLocationButtonClick = () => {
+		if (position) {
+			setPosition(undefined);
+			return;
+		}
+
 		navigator.geolocation.getCurrentPosition(
 			(position) => {
 				setPosition(position);
@@ -54,7 +59,7 @@ export default function HomePage() {
 			{ enableHighAccuracy: true },
 		);
 		mutate();
-		setIsModalOpen(false);
+		// setIsModalOpen(false);
 	};
 
 	return (
@@ -223,7 +228,7 @@ export default function HomePage() {
 			>
 				<div className="bg-white w-80 h-full shadow-lg">
 					<div>
-						<div className="ml-8 my-20 flex items-center">
+						<div className="mx-2 my-20 p-2 flex items-center rounded-md shadow-xs">
 							<div>
 								<BsSearch size={18} className="text-gray-500" />
 							</div>
@@ -234,20 +239,48 @@ export default function HomePage() {
 									autoCapitalize="off"
 									autoComplete="off"
 									spellCheck="false"
-									className="ml-3 w-64 text-2xl font-bold outline-none"
+									className="ml-3 w-64 text-2xl font-bold outline-none placeholder-gray-500"
 									onKeyDown={handleKeyDown}
 								/>
 							</div>
 						</div>
 						<div className="py-12 px-4 bg-yellow-50">
-							<button
-								type="button"
-								className="w-full h-12 bg-green-600 text-white rounded-full shadow-md"
-								onClick={handleLocationButtonClick}
-							>
-								現在地から探す
-							</button>
+							<label className="flex items-center space-x-3 cursor-pointer">
+								{/* チェックボックスを隠すが、peerで連動 */}
+								<input
+									type="checkbox"
+									className="hidden"
+									onChange={handleLocationButtonClick}
+								/>
+								<div
+									className={clsx(
+										"w-12 h-6 bg-gray-300 rounded-full relative transition-colors duration",
+										position && "bg-yellow-500",
+									)}
+								>
+									<div
+										className={clsx(
+											"absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-300",
+											position && "translate-x-6",
+										)}
+									/>
+								</div>
+
+								<span className="text-gray-700 font-medium">
+									現在地から探す
+								</span>
+							</label>
 						</div>
+
+						{/* <div className="py-12 px-4 bg-yellow-50">
+							<label className="inline-flex items-center">
+								<input
+									type="checkbox"
+									className="form-checkbox h-5 w-5 text-green-600"
+								/>
+								<span className="ml-2 text-gray-700">現在地から探す</span>
+							</label>
+						</div> */}
 						<p>モーダルのコンテンツ</p>
 					</div>
 				</div>
