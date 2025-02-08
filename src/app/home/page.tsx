@@ -79,8 +79,8 @@ export default function HomePage() {
 					// UIが固まったら animate-pulse を使用する
 					<div
 						className={clsx(
-							"flex w-[100dvw] items-center justify-center",
-							isLoading ? "h-[calc(100dvh-8px)]" : "h-16",
+							"flex items-center justify-center",
+							isLoading ? "w-[100dvw] h-[calc(100dvh-8px)]" : "h-16",
 						)}
 					>
 						<div className="w-10 h-10 border-4 border-t-transparent rounded-full animate-spin" />
