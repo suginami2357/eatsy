@@ -1,22 +1,19 @@
 import useSWRInfinite from "swr/infinite";
-import type { Restaurant } from "~/types/restaurant";
+import type { Restaurant, SearchParams } from "~/types/restaurant";
 
 type Options = {
 	setHasMore: React.Dispatch<React.SetStateAction<boolean>>;
 	pageSize: number;
-
-	// キーワード検索
-	keyword: string | undefined;
-	// 現在地から検索
-	position: GeolocationPosition | undefined;
+	searchParams: SearchParams;
 };
 
 export const useFetchRestaurants = ({
 	setHasMore,
 	pageSize,
-	keyword,
-	position,
+	searchParams,
 }: Options) => {
+	const { keyword, position } = searchParams;
+
 	const params = (() => {
 		if (keyword) {
 			return `large_area=Z011&keyword=${keyword}`;

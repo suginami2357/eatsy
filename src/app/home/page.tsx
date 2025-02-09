@@ -15,6 +15,7 @@ import { MdModeNight } from "react-icons/md";
 import { TiLocationArrow } from "react-icons/ti";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useFetchRestaurants } from "~/hooks/fetch/useFetchRestaurants";
+import type { SearchParams } from "~/types/restaurant";
 import { formatData, formatDistance } from "~/utils/restaurant";
 
 export default function HomePage() {
@@ -24,8 +25,11 @@ export default function HomePage() {
 	const [scrollY, setScrollY] = useState(0);
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [keyword, setKeyword] = useState("");
-	const [position, setPosition] = useState<GeolocationPosition>();
+	const [searchParams, setSearchParams] = useState<SearchParams>({
+		keyword: "",
+		position: undefined,
+	});
+	const { keyword, position } = searchParams;
 
 	useEffect(() => {
 		const handleScroll = () => setScrollY(window.scrollY);
@@ -43,14 +47,15 @@ export default function HomePage() {
 	} = useFetchRestaurants({
 		setHasMore,
 		pageSize: 10,
-		keyword,
-		position,
+		searchParams,
 	});
 	const data = formatData(restaurants);
 
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+		const value = (event.target as HTMLInputElement).value;
+
 		if (event.key === "Enter") {
-			setKeyword((event.target as HTMLInputElement).value);
+			setSearchParams({ keyword: value, position: undefined });
 			mutate();
 			setIsModalOpen(false);
 		}
@@ -58,18 +63,24 @@ export default function HomePage() {
 
 	const handleLocationButtonClick = () => {
 		if (position) {
-			setPosition(undefined);
+			setSearchParams({ keyword, position: undefined });
 			return;
 		}
 
 		navigator.geolocation.getCurrentPosition(
 			(position) => {
-				setPosition(position);
+				setSearchParams({ keyword: "", position });
 			},
 			undefined,
 			{ enableHighAccuracy: true },
 		);
 		mutate();
+	};
+
+	const handleSearchButtonClick = () => {
+		setSearchParams({ keyword, position });
+		mutate();
+		setIsModalOpen(false);
 	};
 
 	return (
@@ -294,9 +305,15 @@ export default function HomePage() {
 								</div>
 								<span className="mx-2">現在地から探す</span>
 							</label>
-						</div>
 
-						{/* <p>モーダルのコンテンツ</p> */}
+							<button
+								type="button"
+								className="fixed flex items-center justify-center z-10 bottom-9 w-40 h-10 bg-green-600 text-white rounded-full shadow-2xl"
+								onClick={handleSearchButtonClick}
+							>
+								<span className="ml-2 text-sm">検索</span>
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>

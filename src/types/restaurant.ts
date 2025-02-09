@@ -1,3 +1,10 @@
+export type SearchParams = {
+	// キーワード
+	keyword: string;
+	// 現在地
+	position: GeolocationPosition | undefined;
+};
+
 export type Restaurant = {
 	results: {
 		// APIのバージョン
