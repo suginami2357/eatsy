@@ -249,7 +249,7 @@ export default function HomePage() {
 				)}
 			>
 				<div className="w-80 h-full bg-white shadow-lg">
-					<div className="m-8">
+					<div className="m-8 text-gray-900">
 						{/* キーワード検索 */}
 						<div className="flex items-center mx-1 my-12 rounded-md shadow-xs">
 							<div>
@@ -278,14 +278,14 @@ export default function HomePage() {
 								/>
 								<div
 									className={clsx(
-										"w-12 h-6 bg-gray-300 rounded-full relative transition-colors duration",
+										"w-10 h-6 bg-gray-300 rounded-full relative transition-colors duration",
 										position && "bg-green-600",
 									)}
 								>
 									<div
 										className={clsx(
 											"absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-300",
-											position && "translate-x-6",
+											position && "translate-x-4",
 										)}
 									/>
 								</div>
