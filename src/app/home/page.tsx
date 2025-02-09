@@ -260,12 +260,12 @@ export default function HomePage() {
 							</div>
 							<div>
 								<input
+									className="ml-2 w-full text-2xl font-bold outline-none placeholder-gray-500"
 									placeholder="検索"
 									autoCorrect="off"
 									autoCapitalize="off"
 									autoComplete="off"
 									spellCheck="false"
-									className="ml-2 w-full text-2xl font-bold outline-none placeholder-gray-500"
 									onKeyDown={handleKeyDown}
 								/>
 							</div>
