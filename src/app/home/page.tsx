@@ -2,6 +2,7 @@
 import clsx from "clsx";
 import type React from "react";
 import { useEffect, useState } from "react";
+import { MobileView } from "react-device-detect";
 import { BsFillCreditCardFill } from "react-icons/bs";
 import { BsSearch } from "react-icons/bs";
 import { FaChevronLeft, FaChevronRight, FaSearch } from "react-icons/fa";
@@ -17,6 +18,8 @@ import { useFetchRestaurants } from "~/hooks/fetch/useFetchRestaurants";
 import { formatData, formatDistance } from "~/utils/restaurant";
 
 export default function HomePage() {
+	// TODO: MobileView =　true モーダルで画面外をクリックすると閉じる
+
 	const [hasMore, setHasMore] = useState(true);
 	const [scrollY, setScrollY] = useState(0);
 
@@ -251,8 +254,8 @@ export default function HomePage() {
 				<div className="w-80 h-full bg-white shadow-lg">
 					<div className="m-8 text-gray-900">
 						{/* キーワード検索 */}
-						<div className="flex items-center mx-1 my-12 rounded-md shadow-xs">
-							<div>
+						<div className="flex items-center my-12 rounded-md shadow-xs">
+							<div className="mx-1">
 								<BsSearch size={18} className="text-gray-500" />
 							</div>
 							<div>
@@ -262,7 +265,7 @@ export default function HomePage() {
 									autoCapitalize="off"
 									autoComplete="off"
 									spellCheck="false"
-									className="ml-3 w-64 text-2xl font-bold outline-none placeholder-gray-500"
+									className="ml-2 w-full text-2xl font-bold outline-none placeholder-gray-500"
 									onKeyDown={handleKeyDown}
 								/>
 							</div>
