@@ -1,7 +1,7 @@
 "use client";
 import clsx from "clsx";
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsFillCreditCardFill } from "react-icons/bs";
 import { BsSearch } from "react-icons/bs";
 import { FaChevronLeft, FaChevronRight, FaSearch } from "react-icons/fa";
@@ -18,9 +18,18 @@ import { formatData, formatDistance } from "~/utils/restaurant";
 
 export default function HomePage() {
 	const [hasMore, setHasMore] = useState(true);
+	const [scrollY, setScrollY] = useState(0);
+
+	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [keyword, setKeyword] = useState("");
 	const [position, setPosition] = useState<GeolocationPosition>();
-	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	useEffect(() => {
+		const handleScroll = () => setScrollY(window.scrollY);
+		window.addEventListener("scroll", handleScroll);
+		handleScroll();
+		return () => window.removeEventListener("scroll", handleScroll);
+	}, []);
 
 	const {
 		data: restaurants,
@@ -34,7 +43,6 @@ export default function HomePage() {
 		keyword,
 		position,
 	});
-
 	const data = formatData(restaurants);
 
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -59,7 +67,6 @@ export default function HomePage() {
 			{ enableHighAccuracy: true },
 		);
 		mutate();
-		// setIsModalOpen(false);
 	};
 
 	return (
@@ -114,6 +121,7 @@ export default function HomePage() {
 									<span className="ml-1">{x.genre.name}</span>
 								</div>
 
+								{/* 「現在地から探す」で表示 */}
 								{position ? (
 									<div className="flex">
 										<div className="h-4 w-4 bg-gray-300 rounded-full">
@@ -207,28 +215,43 @@ export default function HomePage() {
 			</InfiniteScroll>
 
 			{!isLoading && (
-				<button
-					type="button"
-					className="z-10 fixed flex items-center justify-center bottom-8 left-2 w-12 h-12 bg-white/45 text-gray-900 rounded-full backdrop-blur-[6px] backdrop-contrast-[4] shadow-lg"
-					onClick={() => setIsModalOpen(!isModalOpen)}
-				>
-					{isModalOpen ? (
-						<FaChevronLeft size={24} />
-					) : (
-						<FaChevronRight size={24} />
+				<>
+					<button
+						type="button"
+						className="z-30 fixed flex items-center justify-center bottom-8 left-2 w-12 h-12 bg-white/45 text-gray-900 rounded-full backdrop-blur-[6px] backdrop-contrast-[4] shadow-lg"
+						onClick={() => setIsModalOpen(!isModalOpen)}
+					>
+						{isModalOpen ? (
+							<FaChevronLeft size={24} />
+						) : (
+							<FaChevronRight size={24} />
+						)}
+					</button>
+
+					{scrollY < 1000 && !position && (
+						<button
+							type="button"
+							className="fixed flex items-center justify-center z-10 bottom-9 w-40 h-10 bg-green-600 text-white rounded-full shadow-2xl"
+							style={{ opacity: 1 - scrollY / 1000 }}
+							onClick={handleLocationButtonClick}
+						>
+							<MdLocationOn size={20} />
+							<span className="ml-2 text-sm">現在地から探す</span>
+						</button>
 					)}
-				</button>
+				</>
 			)}
 
 			<div
 				className={clsx(
-					"fixed inset-0 flex transform transition-transform duration-300 ease-in-out",
+					"flex fixed inset-0 z-20 transform transition-transform duration-300 ease-in-out",
 					isModalOpen ? "translate-x-0" : "-translate-x-full",
 				)}
 			>
-				<div className="bg-white w-80 h-full shadow-lg">
-					<div>
-						<div className="mx-2 my-20 p-2 flex items-center rounded-md shadow-xs">
+				<div className="w-80 h-full bg-white shadow-lg">
+					<div className="m-8">
+						{/* キーワード検索 */}
+						<div className="flex items-center mx-1 my-12 rounded-md shadow-xs">
 							<div>
 								<BsSearch size={18} className="text-gray-500" />
 							</div>
@@ -244,9 +267,10 @@ export default function HomePage() {
 								/>
 							</div>
 						</div>
-						<div className="py-12 px-4 bg-yellow-50">
-							<label className="flex items-center space-x-3 cursor-pointer">
-								{/* チェックボックスを隠すが、peerで連動 */}
+
+						{/* 現在地から探す */}
+						<div>
+							<label className="flex items-center cursor-pointer">
 								<input
 									type="checkbox"
 									className="hidden"
@@ -255,7 +279,7 @@ export default function HomePage() {
 								<div
 									className={clsx(
 										"w-12 h-6 bg-gray-300 rounded-full relative transition-colors duration",
-										position && "bg-yellow-500",
+										position && "bg-green-600",
 									)}
 								>
 									<div
@@ -265,23 +289,11 @@ export default function HomePage() {
 										)}
 									/>
 								</div>
-
-								<span className="text-gray-700 font-medium">
-									現在地から探す
-								</span>
+								<span className="mx-2">現在地から探す</span>
 							</label>
 						</div>
 
-						{/* <div className="py-12 px-4 bg-yellow-50">
-							<label className="inline-flex items-center">
-								<input
-									type="checkbox"
-									className="form-checkbox h-5 w-5 text-green-600"
-								/>
-								<span className="ml-2 text-gray-700">現在地から探す</span>
-							</label>
-						</div> */}
-						<p>モーダルのコンテンツ</p>
+						{/* <p>モーダルのコンテンツ</p> */}
 					</div>
 				</div>
 			</div>
