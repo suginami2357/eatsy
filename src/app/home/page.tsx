@@ -230,9 +230,15 @@ export default function HomePage() {
 
 			{!isLoading && (
 				<>
+					{/* サイドバー開閉ボタン */}
 					<button
 						type="button"
-						className="z-30 fixed flex items-center justify-center bottom-8 left-2 w-12 h-12 bg-white/45 text-gray-900 rounded-full backdrop-blur-[6px] backdrop-contrast-[4] shadow-lg"
+						className={clsx(
+							"fixed flex items-center justify-center z-30 left-2 bottom-8 w-12 h-12 bg-white text-gray-900 rounded-full shadow-lg",
+							scrollY > 1000 &&
+								"bg-white/50 backdrop-blur-[6px] backdrop-contrast-[4]",
+						)}
+						style={{ opacity: scrollY < 1000 ? 1 - scrollY / 2000 : 1 }}
 						onClick={() => setIsModalOpen(!isModalOpen)}
 					>
 						{isModalOpen ? (
