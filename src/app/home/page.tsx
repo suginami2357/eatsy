@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { MobileView } from "react-device-detect";
 import { BsFillCreditCardFill } from "react-icons/bs";
 import { BsSearch } from "react-icons/bs";
-import { FaChevronLeft, FaChevronRight, FaSearch } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { FaCircleChevronRight, FaLocationDot } from "react-icons/fa6";
 import { IoMdTrain } from "react-icons/io";
 import { IoLocationSharp, IoTime } from "react-icons/io5";
@@ -245,7 +245,7 @@ export default function HomePage() {
 					{scrollY < 1000 && !position && (
 						<button
 							type="button"
-							className="fixed flex items-center justify-center z-10 bottom-9 w-40 h-10 bg-green-600 text-white rounded-full shadow-2xl"
+							className="fixed flex items-center justify-center z-10 bottom-9 w-40 h-10 bg-gray-950 text-white rounded-full shadow-2xl"
 							style={{ opacity: 1 - scrollY / 1000 }}
 							onClick={handleLocationButtonClick}
 						>
@@ -308,10 +308,11 @@ export default function HomePage() {
 
 							<button
 								type="button"
-								className="fixed flex items-center justify-center z-10 bottom-9 w-40 h-10 bg-green-600 text-white rounded-full shadow-2xl"
+								className="fixed flex items-center justify-center z-10 bottom-9 left-20 w-40 h-10 bg-gray-950 text-white text-lg rounded-xl"
 								onClick={handleSearchButtonClick}
 							>
-								<span className="ml-2 text-sm">検索</span>
+								<BsSearch size={12} />
+								<span className="ml-2 text-sm">検索する</span>
 							</button>
 						</div>
 					</div>
