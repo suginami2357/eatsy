@@ -312,9 +312,41 @@ export default function HomePage() {
 								<span className="mx-2">現在地から探す</span>
 							</label>
 
+							<div className="grid grid-cols-3 gap-2 mt-8 text-sm">
+								<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+									子連れ歓迎
+								</div>
+								<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+									コース
+								</div>
+								<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+									個室
+								</div>
+
+								<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+									禁煙
+								</div>
+								<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+									喫煙
+								</div>
+								<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+									ランチ
+								</div>
+
+								<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+									クレカ決済
+								</div>
+								<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+									飲み放題
+								</div>
+								<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+									食べ放題
+								</div>
+							</div>
+
 							<button
 								type="button"
-								className="fixed flex items-center justify-center z-10 bottom-9 left-20 w-40 h-10 bg-gray-950 text-white text-lg rounded-xl"
+								className="fixed flex items-center justify-center z-10 bottom-9 left-20 w-40 h-10 bg-gray-950 text-white text-lg rounded-lg"
 								onClick={handleSearchButtonClick}
 							>
 								<BsSearch size={12} />
