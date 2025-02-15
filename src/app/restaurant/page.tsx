@@ -18,7 +18,7 @@ import { useFetchRestaurants } from "~/hooks/fetch/useFetchRestaurants";
 import type { SearchParams } from "~/types/restaurant";
 import { formatData, formatDistance } from "~/utils/restaurant";
 
-export default function HomePage() {
+export default function Page() {
 	// TODO: MobileView =　true モーダルで画面外をクリックすると閉じる
 
 	const [hasMore, setHasMore] = useState(true);
@@ -37,6 +37,10 @@ export default function HomePage() {
 		handleScroll();
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, []);
+
+	useEffect(() => {
+		document.body.style.overflow = isModalOpen ? "hidden" : "auto";
+	}, [isModalOpen]);
 
 	const {
 		data: restaurants,
@@ -264,7 +268,7 @@ export default function HomePage() {
 
 			<div
 				className={clsx(
-					"flex fixed inset-0 z-20 transform transition-transform duration-300 ease-in-out",
+					"flex fixed inset-0 w-full h-full z-20 transform transition-transform duration-300 ease-in-out",
 					isModalOpen ? "translate-x-0" : "-translate-x-full",
 				)}
 			>
