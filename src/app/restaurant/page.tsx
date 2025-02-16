@@ -2,7 +2,6 @@
 import clsx from "clsx";
 import type React from "react";
 import { useEffect, useState } from "react";
-import { isMobile } from "react-device-detect";
 import { BsFillCreditCardFill } from "react-icons/bs";
 import { BsSearch } from "react-icons/bs";
 import { FaCircleChevronRight, FaLocationDot } from "react-icons/fa6";
@@ -16,15 +15,15 @@ import RestaurantList from "~/components/restaurants/RestaurantList";
 import SearchForm from "~/components/restaurants/SearchForm";
 import ChevronButton from "~/components/ui/chevron-button";
 import Sidebar from "~/components/ui/sidebar";
-import { useFetchRestaurants } from "~/hooks/fetch/useFetchRestaurants";
+import { useDevice } from "~/hooks/useDevice";
+import { useFetchRestaurants } from "~/hooks/useFetchRestaurants";
 import type { SearchParams } from "~/types/restaurant";
 
 export default function Page() {
-	// TODO: MobileView =　true モーダルで画面外をクリックすると閉じる
+	const { isMobile } = useDevice();
 
 	const [hasMore, setHasMore] = useState(true);
 	const [scrollY, setScrollY] = useState(0);
-
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [searchParams, setSearchParams] = useState<SearchParams>({
 		keyword: "",
@@ -38,11 +37,6 @@ export default function Page() {
 		handleScroll();
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, []);
-
-	useEffect(() => {
-		if (!isMobile) return;
-		document.body.style.overflow = isModalOpen ? "hidden" : "auto";
-	}, [isModalOpen]);
 
 	const fetch = useFetchRestaurants({
 		setHasMore,
@@ -87,44 +81,28 @@ export default function Page() {
 					ホットペッパーグルメ Webサービス
 				</a>
 			</div>
-
 			<RestaurantList fetch={fetch} hasMore={hasMore} position={position} />
 
 			{!isLoading && (
-				<>
-					<ChevronButton
-						className={clsx(
-							"fixed flex items-center justify-center z-30 left-2 bottom-8 w-12 h-12 bg-white text-gray-900 rounded-full shadow-lg",
-							isMobile &&
-								scrollY > 1000 &&
-								"bg-white/50 backdrop-blur-[6px] backdrop-contrast-[4]",
-						)}
-						style={
-							isMobile
-								? { opacity: scrollY < 1000 ? 1 - scrollY / 2000 : 1 }
-								: {}
-						}
-						isOpen={isModalOpen}
-						setIsOpen={setIsModalOpen}
-					/>
-					{/* {scrollY < 1000 && !position && (
-						<button
-							type="button"
-							className="fixed flex items-center justify-center z-10 bottom-9 w-40 h-10 bg-green-600 text-white rounded-full shadow-2xl"
-							style={{ opacity: 1 - scrollY / 1000 }}
-							onClick={handleLocationButtonClick}
-						>
-							<MdLocationOn size={20} />
-							<span className="ml-2 text-sm">現在地から探す</span>
-						</button>
-					)} */}
-				</>
+				<ChevronButton
+					className={clsx(
+						"fixed flex items-center justify-center z-30 left-2 bottom-8 w-12 h-12 bg-white text-gray-900 rounded-full shadow-lg",
+						isMobile &&
+							scrollY > 1000 &&
+							"bg-white/50 backdrop-blur-[6px] backdrop-contrast-[4]",
+					)}
+					style={
+						isMobile ? { opacity: scrollY < 1000 ? 1 - scrollY / 2000 : 1 } : {}
+					}
+					isOpen={isModalOpen}
+					setIsOpen={setIsModalOpen}
+				/>
 			)}
 
 			<Sidebar
-				isMobile={isMobile}
 				isOpen={isModalOpen}
 				setIsOpen={setIsModalOpen}
+				showOverlay={isMobile}
 			>
 				<SearchForm
 					position={position}

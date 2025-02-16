@@ -1,11 +1,23 @@
 import clsx from "clsx";
+import { useEffect } from "react";
 
 type SidebarProps = {
 	isOpen: boolean;
 	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	showOverlay?: boolean;
 } & React.PropsWithChildren;
 
-export default function Sidebar({ isOpen, setIsOpen, children }: SidebarProps) {
+export default function Sidebar({
+	isOpen,
+	setIsOpen,
+	showOverlay = true,
+	children,
+}: SidebarProps) {
+	useEffect(() => {
+		if (!showOverlay) return;
+		document.body.style.overflow = isOpen ? "hidden" : "auto";
+	}, [showOverlay, isOpen]);
+
 	return (
 		<div
 			className={clsx(
@@ -14,7 +26,7 @@ export default function Sidebar({ isOpen, setIsOpen, children }: SidebarProps) {
 			)}
 		>
 			{/* オーバーレイ */}
-			{
+			{showOverlay && (
 				<button
 					className={clsx(
 						"flex fixed inset-0 bg-black bg-opacity-50 transition-opacity",
@@ -23,7 +35,7 @@ export default function Sidebar({ isOpen, setIsOpen, children }: SidebarProps) {
 					onClick={() => setIsOpen(false)}
 					type="button"
 				/>
-			}
+			)}
 
 			{/* サイドバー */}
 			<div className="flex z-30 w-80 h-full bg-white shadow-lg">
