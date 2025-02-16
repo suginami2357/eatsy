@@ -66,12 +66,8 @@ export default function Page() {
 			return;
 		}
 
-		navigator.geolocation.getCurrentPosition(
-			(position) => {
-				setSearchParams({ keyword: "", position });
-			},
-			undefined,
-			{ enableHighAccuracy: true },
+		navigator.geolocation.getCurrentPosition((position) =>
+			setSearchParams({ keyword: "", position }),
 		);
 		mutate();
 	};
@@ -105,17 +101,17 @@ export default function Page() {
 						isOpen={isModalOpen}
 						setIsOpen={setIsModalOpen}
 					/>
-					{scrollY < 1000 && !position && (
+					{/* {scrollY < 1000 && !position && (
 						<button
 							type="button"
-							className="fixed flex items-center justify-center z-10 bottom-9 w-40 h-10 bg-gray-950 text-white rounded-full shadow-2xl"
+							className="fixed flex items-center justify-center z-10 bottom-9 w-40 h-10 bg-green-600 text-white rounded-full shadow-2xl"
 							style={{ opacity: 1 - scrollY / 1000 }}
 							onClick={handleLocationButtonClick}
 						>
 							<MdLocationOn size={20} />
 							<span className="ml-2 text-sm">現在地から探す</span>
 						</button>
-					)}
+					)} */}
 				</>
 			)}
 

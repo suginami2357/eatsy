@@ -39,9 +39,41 @@ export default function SearchForm({
 					</div>
 				</div>
 
-				{/* 現在地から探す */}
 				<div>
-					<label className="flex items-center cursor-pointer">
+					<div className="grid grid-cols-3 gap-2 amt-12 text-sm">
+						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+							個室
+						</div>
+						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+							コース
+						</div>
+						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+							子連れ歓迎
+						</div>
+
+						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+							ランチ
+						</div>
+						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+							喫煙
+						</div>
+						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+							禁煙
+						</div>
+
+						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+							クレカ決済
+						</div>
+						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+							食べ放題
+						</div>
+						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+							飲み放題
+						</div>
+					</div>
+
+					{/* 現在地から探す */}
+					<label className="flex items-center mt-8 cursor-pointer">
 						<input
 							type="checkbox"
 							className="hidden"
@@ -63,46 +95,14 @@ export default function SearchForm({
 						<span className="mx-2">現在地から探す</span>
 					</label>
 
-					<div className="grid grid-cols-3 gap-2 mt-8 text-sm">
-						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
-							子連れ歓迎
-						</div>
-						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
-							コース
-						</div>
-						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
-							個室
-						</div>
-
-						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
-							禁煙
-						</div>
-						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
-							喫煙
-						</div>
-						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
-							ランチ
-						</div>
-
-						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
-							クレカ決済
-						</div>
-						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
-							飲み放題
-						</div>
-						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
-							食べ放題
-						</div>
-					</div>
-
-					<button
+					{/* <button
 						type="button"
-						className="fixed flex items-center justify-center z-10 bottom-9 left-20 w-40 h-10 bg-gray-950 text-white text-lg rounded-lg"
+						className="fixed flex items-center justify-center z-10 bottom-9 left-20 w-32 h-10 bg-gray-900 text-white text-lg rounded-lg"
 						onClick={handleSearchButtonClick}
 					>
 						<BsSearch size={12} />
 						<span className="ml-2 text-sm">検索する</span>
-					</button>
+					</button> */}
 				</div>
 			</div>
 		</div>
