@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import type React from "react";
 import { useEffect, useState } from "react";
-import { MobileView } from "react-device-detect";
+import { isMobile } from "react-device-detect";
 import { BsFillCreditCardFill } from "react-icons/bs";
 import { BsSearch } from "react-icons/bs";
 import { FaCircleChevronRight, FaLocationDot } from "react-icons/fa6";
@@ -40,6 +40,7 @@ export default function Page() {
 	}, []);
 
 	useEffect(() => {
+		if (!isMobile) return;
 		document.body.style.overflow = isModalOpen ? "hidden" : "auto";
 	}, [isModalOpen]);
 
@@ -94,10 +95,15 @@ export default function Page() {
 					<ChevronButton
 						className={clsx(
 							"fixed flex items-center justify-center z-30 left-2 bottom-8 w-12 h-12 bg-white text-gray-900 rounded-full shadow-lg",
-							scrollY > 1000 &&
+							isMobile &&
+								scrollY > 1000 &&
 								"bg-white/50 backdrop-blur-[6px] backdrop-contrast-[4]",
 						)}
-						style={{ opacity: scrollY < 1000 ? 1 - scrollY / 2000 : 1 }}
+						style={
+							isMobile
+								? { opacity: scrollY < 1000 ? 1 - scrollY / 2000 : 1 }
+								: {}
+						}
 						isOpen={isModalOpen}
 						setIsOpen={setIsModalOpen}
 					/>
@@ -115,7 +121,11 @@ export default function Page() {
 				</>
 			)}
 
-			<Sidebar isOpen={isModalOpen}>
+			<Sidebar
+				isMobile={isMobile}
+				isOpen={isModalOpen}
+				setIsOpen={setIsModalOpen}
+			>
 				<SearchForm
 					position={position}
 					handleKeyDown={handleKeyDown}
