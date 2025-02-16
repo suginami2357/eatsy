@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { BsSearch } from "react-icons/bs";
+import { MdLocationOn } from "react-icons/md";
 
 type SearchFormProps = {
 	/** 現在地の位置情報。位置が取得できない場合はundefinedになる。 */
@@ -40,7 +41,7 @@ export default function SearchForm({
 				</div>
 
 				<div>
-					<div className="grid grid-cols-3 gap-2 amt-12 text-sm">
+					<div className="grid grid-cols-3 gap-2 text-sm">
 						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
 							個室
 						</div>
@@ -72,37 +73,16 @@ export default function SearchForm({
 						</div>
 					</div>
 
-					{/* 現在地から探す */}
-					<label className="flex items-center mt-8 cursor-pointer">
-						<input
-							type="checkbox"
-							className="hidden"
-							onChange={handleLocationButtonClick}
-						/>
-						<div
-							className={clsx(
-								"w-10 h-6 bg-gray-300 rounded-full relative transition-colors duration",
-								position && "bg-green-600",
-							)}
+					<div className="mt-2 text-sm">
+						<button
+							type="button"
+							className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md"
+							onClick={handleLocationButtonClick}
 						>
-							<div
-								className={clsx(
-									"absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-300",
-									position && "translate-x-4",
-								)}
-							/>
-						</div>
-						<span className="mx-2">現在地から探す</span>
-					</label>
-
-					{/* <button
-						type="button"
-						className="fixed flex items-center justify-center z-10 bottom-9 left-20 w-32 h-10 bg-gray-900 text-white text-lg rounded-lg"
-						onClick={handleSearchButtonClick}
-					>
-						<BsSearch size={12} />
-						<span className="ml-2 text-sm">検索する</span>
-					</button> */}
+							<MdLocationOn size={20} className="text-gray-300" />
+							<span className="ml-1">現在地から探す</span>
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
