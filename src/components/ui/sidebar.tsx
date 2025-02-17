@@ -22,7 +22,7 @@ export default function Sidebar({
 		<div
 			className={clsx(
 				"flex fixed inset-0 z-20 transform transition-transform duration-300 ease-in-out",
-				isOpen ? "translate-x-0" : "-translate-x-full",
+				isOpen ? "translate-x-0" : "delay-[50ms] -translate-x-full",
 			)}
 		>
 			{/* オーバーレイ */}
@@ -30,7 +30,7 @@ export default function Sidebar({
 				<button
 					className={clsx(
 						"flex fixed inset-0 bg-black bg-opacity-50 transition-opacity",
-						isOpen ? "opacity-100 delay-[200ms]" : "opacity-0",
+						isOpen ? "opacity-100 delay-150" : "opacity-0",
 					)}
 					onClick={() => setIsOpen(false)}
 					type="button"
