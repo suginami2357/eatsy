@@ -73,16 +73,14 @@ export default function SearchForm({
 						</div>
 					</div>
 
-					<div className="mt-2 text-sm">
-						<button
-							type="button"
-							className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md"
-							onClick={handleLocationButtonClick}
-						>
-							<MdLocationOn size={20} className="text-gray-300" />
-							<span className="ml-1">現在地から探す</span>
-						</button>
-					</div>
+					<button
+						type="button"
+						className="flex items-center justify-center w-full h-10 mt-2 bg-white text-sm border-[0.5px] border-gray-950 rounded-sm shadow-md"
+						onClick={handleLocationButtonClick}
+					>
+						<MdLocationOn size={20} className="text-gray-300" />
+						<span className="ml-1">現在地から探す</span>
+					</button>
 				</div>
 			</div>
 		</div>
