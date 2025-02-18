@@ -1,24 +1,38 @@
 import clsx from "clsx";
 import { BsSearch } from "react-icons/bs";
 import { MdLocationOn } from "react-icons/md";
+import type { SearchParams } from "~/types/restaurant";
 
 type SearchFormProps = {
-	/** 現在地の位置情報。位置が取得できない場合はundefinedになる。 */
-	position: GeolocationPosition | undefined;
+	/**  */
+	searchParams: SearchParams;
+	/**  */
+	setSearchParams: (params: SearchParams) => void;
 	/** 入力フィールドでキーボードのキーが押されたときに呼び出される関数 */
 	handleKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 	/** 現在地ボタンがクリックされたときに呼び出される関数 */
 	handleLocationButtonClick: () => void;
-	/** 検索ボタンがクリックされたときに呼び出される関数 */
-	handleSearchButtonClick: () => void;
 };
 
 export default function SearchForm({
-	position,
+	searchParams,
+	setSearchParams,
 	handleKeyDown,
 	handleLocationButtonClick,
-	handleSearchButtonClick,
 }: SearchFormProps) {
+	const {
+		keyword,
+		course,
+		free_drink,
+		free_food,
+		private_room,
+		card,
+		non_smoking,
+		lunch,
+		child,
+		position,
+	} = searchParams;
+
 	return (
 		<div className="w-80 h-full bg-white shadow-lg">
 			<div className="m-8 text-gray-900">
@@ -42,40 +56,97 @@ export default function SearchForm({
 
 				<div>
 					<div className="grid grid-cols-3 gap-2 text-sm">
-						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+						<button
+							type="button"
+							className={clsx(
+								"flex items-center justify-center h-10 border-[0.5px] border-gray-950 rounded-sm shadow-md",
+								private_room ? "bg-gray-900 text-white" : "bg-white",
+							)}
+						>
 							個室
-						</div>
-						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+						</button>
+						<button
+							type="button"
+							className={clsx(
+								"flex items-center justify-center h-10 border-[0.5px] border-gray-950 rounded-sm shadow-md",
+								course ? "bg-gray-900 text-white" : "bg-white",
+							)}
+						>
 							コース
-						</div>
-						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+						</button>
+						<button
+							type="button"
+							className={clsx(
+								"flex items-center justify-center h-10 border-[0.5px] border-gray-950 rounded-sm shadow-md",
+								child ? "bg-gray-900 text-white" : "bg-white",
+							)}
+						>
 							子連れ歓迎
-						</div>
+						</button>
 
-						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+						<button
+							type="button"
+							className={clsx(
+								"flex items-center justify-center h-10 border-[0.5px] border-gray-950 rounded-sm shadow-md",
+								lunch ? "bg-gray-900 text-white" : "bg-white",
+							)}
+						>
 							ランチ
-						</div>
-						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+						</button>
+						<button
+							type="button"
+							className={clsx(
+								"flex items-center justify-center h-10 border-[0.5px] border-gray-950 rounded-sm shadow-md",
+								// action ? "bg-gray-900 text-white" : "bg-white",
+							)}
+						>
 							喫煙
-						</div>
-						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+						</button>
+						<button
+							type="button"
+							className={clsx(
+								"flex items-center justify-center h-10 border-[0.5px] border-gray-950 rounded-sm shadow-md",
+								non_smoking ? "bg-gray-900 text-white" : "bg-white",
+							)}
+						>
 							禁煙
-						</div>
+						</button>
 
-						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+						<button
+							type="button"
+							className={clsx(
+								"flex items-center justify-center h-10 border-[0.5px] border-gray-950 rounded-sm shadow-md",
+								card ? "bg-gray-900 text-white" : "bg-white",
+							)}
+						>
 							クレカ決済
-						</div>
-						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+						</button>
+						<button
+							type="button"
+							className={clsx(
+								"flex items-center justify-center h-10 border-[0.5px] border-gray-950 rounded-sm shadow-md",
+								free_drink ? "bg-gray-900 text-white" : "bg-white",
+							)}
+						>
 							食べ放題
-						</div>
-						<div className="flex items-center justify-center h-10 bg-white border-[0.5px] border-gray-950 rounded-sm shadow-md">
+						</button>
+						<button
+							type="button"
+							className={clsx(
+								"flex items-center justify-center h-10 border-[0.5px] border-gray-950 rounded-sm shadow-md",
+								free_food ? "bg-gray-900 text-white" : "bg-white",
+							)}
+						>
 							飲み放題
-						</div>
+						</button>
 					</div>
 
 					<button
 						type="button"
-						className="flex items-center justify-center w-full h-10 mt-2 bg-white text-sm border-[0.5px] border-gray-950 rounded-sm shadow-md"
+						className={clsx(
+							"flex items-center justify-center w-full h-10 mt-2 bg-white text-sm border-[0.5px] border-gray-950 rounded-sm shadow-md",
+							searchParams.position && "bg-gray-950 text-white",
+						)}
 						onClick={handleLocationButtonClick}
 					>
 						<MdLocationOn size={20} className="text-gray-300" />

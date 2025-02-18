@@ -11,6 +11,7 @@ import { LuRefreshCw } from "react-icons/lu";
 import { MdLocationOn, MdRestaurant } from "react-icons/md";
 import { MdModeNight } from "react-icons/md";
 import { TiLocationArrow } from "react-icons/ti";
+import CreditDisplay from "~/components/restaurants/CreditDisplay";
 import RestaurantList from "~/components/restaurants/RestaurantList";
 import SearchForm from "~/components/restaurants/SearchForm";
 import ChevronButton from "~/components/ui/chevron-button";
@@ -27,6 +28,14 @@ export default function Page() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [searchParams, setSearchParams] = useState<SearchParams>({
 		keyword: "",
+		course: false,
+		free_drink: false,
+		free_food: false,
+		private_room: false,
+		card: false,
+		non_smoking: false,
+		lunch: false,
+		child: false,
 		position: undefined,
 	});
 	const { keyword, position } = searchParams;
@@ -49,7 +58,7 @@ export default function Page() {
 		const value = (event.target as HTMLInputElement).value;
 
 		if (event.key === "Enter") {
-			setSearchParams({ keyword: value, position: undefined });
+			setSearchParams({ ...searchParams, keyword: value, position: undefined });
 			mutate();
 			setIsModalOpen(false);
 		}
@@ -57,30 +66,19 @@ export default function Page() {
 
 	const handleLocationButtonClick = () => {
 		if (position) {
-			setSearchParams({ keyword, position: undefined });
+			setSearchParams({ ...searchParams, keyword, position: undefined });
 			return;
 		}
 
 		navigator.geolocation.getCurrentPosition((position) =>
-			setSearchParams({ keyword: "", position }),
+			setSearchParams({ ...searchParams, keyword: "", position }),
 		);
 		mutate();
 	};
 
-	const handleSearchButtonClick = () => {
-		setSearchParams({ keyword, position });
-		mutate();
-		setIsModalOpen(false);
-	};
-
 	return (
 		<div className="flex flex-col items-center">
-			<div className="h-2 text-[6px] text-gray-600">
-				Powered by
-				<a href="http://webservice.recruit.co.jp/">
-					ホットペッパーグルメ Webサービス
-				</a>
-			</div>
+			<CreditDisplay className="h-2 text-[6px] text-gray-600" />
 			<RestaurantList fetch={fetch} hasMore={hasMore} position={position} />
 
 			{!isLoading && (
@@ -105,10 +103,10 @@ export default function Page() {
 				showOverlay={isMobile}
 			>
 				<SearchForm
-					position={position}
+					searchParams={searchParams}
+					setSearchParams={setSearchParams}
 					handleKeyDown={handleKeyDown}
 					handleLocationButtonClick={handleLocationButtonClick}
-					handleSearchButtonClick={handleSearchButtonClick}
 				/>
 			</Sidebar>
 		</div>
