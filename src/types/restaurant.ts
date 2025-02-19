@@ -2,21 +2,21 @@ export type SearchParams = {
 	// キーワード
 	keyword?: string;
 	// コース
-	course?: true;
+	course?: boolean;
 	// 飲み放題
-	free_drink?: true;
+	free_drink?: boolean;
 	// 食べ放題
-	free_food?: true;
+	free_food?: boolean;
 	// 個室
-	private_room?: true;
+	private_room?: boolean;
 	// クレジット決済可能
-	card?: true;
+	card?: boolean;
 	// 禁煙席
-	non_smoking?: true;
+	non_smoking?: boolean;
 	// ランチ
-	lunch?: true;
+	lunch?: boolean;
 	//子連れ歓迎
-	child?: true;
+	child?: boolean;
 	// 現在地
 	position?: GeolocationPosition;
 };

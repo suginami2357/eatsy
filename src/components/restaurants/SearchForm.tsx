@@ -9,16 +9,14 @@ type SearchFormProps = {
 	/**  */
 	setSearchParams: (params: SearchParams) => void;
 	/** 入力フィールドでキーボードのキーが押されたときに呼び出される関数 */
-	handleKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
-	/** 現在地ボタンがクリックされたときに呼び出される関数 */
-	handleLocationButtonClick: () => void;
+	// handleKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+	// /** 現在地ボタンがクリックされたときに呼び出される関数 */
+	// handleLocationButtonClick: () => void;
 };
 
 export default function SearchForm({
 	searchParams,
 	setSearchParams,
-	handleKeyDown,
-	handleLocationButtonClick,
 }: SearchFormProps) {
 	const {
 		keyword,
@@ -32,6 +30,37 @@ export default function SearchForm({
 		child,
 		position,
 	} = searchParams;
+
+	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+		const value = (event.target as HTMLInputElement).value;
+
+		if (event.key === "Enter") {
+			setSearchParams({ ...searchParams, keyword: value, position: undefined });
+		}
+	};
+
+	const handleLocationButtonClick = () => {
+		if (searchParams.position) {
+			setSearchParams({ ...searchParams, position: undefined });
+			return;
+		}
+
+		navigator.geolocation.getCurrentPosition((position) =>
+			setSearchParams({ ...searchParams, keyword: "", position }),
+		);
+	};
+
+	const values = [
+		{ value: "private_room", label: "個室" },
+		{ value: "course", label: "コース" },
+		{ value: "child", label: "子連れ歓迎" },
+		{ value: "lunch", label: "ランチ" },
+		{ value: "_", label: "喫煙" },
+		{ value: "non_smoking", label: "禁煙" },
+		{ value: "card", label: "クレカ決済" },
+		{ value: "free_drink", label: "食べ放題" },
+		{ value: "free_food", label: "飲み放題" },
+	];
 
 	return (
 		<div className="w-80 h-full bg-white shadow-lg">
@@ -56,7 +85,27 @@ export default function SearchForm({
 
 				<div>
 					<div className="grid grid-cols-3 gap-2 text-sm">
-						<button
+						{values.map(({ value, label }) => (
+							<button
+								key={value}
+								type="button"
+								className={clsx(
+									"flex items-center justify-center h-10 border-[0.5px] border-gray-950 rounded-sm shadow-md",
+									searchParams[value as keyof SearchParams]
+										? "bg-gray-900 text-white"
+										: "bg-white",
+								)}
+								onClick={() =>
+									setSearchParams({
+										...searchParams,
+										[value]: !searchParams[value as keyof SearchParams],
+									})
+								}
+							>
+								{label}
+							</button>
+						))}
+						{/* <button
 							type="button"
 							className={clsx(
 								"flex items-center justify-center h-10 border-[0.5px] border-gray-950 rounded-sm shadow-md",
@@ -136,16 +185,22 @@ export default function SearchForm({
 								"flex items-center justify-center h-10 border-[0.5px] border-gray-950 rounded-sm shadow-md",
 								free_food ? "bg-gray-900 text-white" : "bg-white",
 							)}
+							onClick={() =>
+								setSearchParams({
+									...searchParams,
+									free_food: !free_food,
+								})
+							}
 						>
 							飲み放題
-						</button>
+						</button> */}
 					</div>
 
 					<button
 						type="button"
 						className={clsx(
 							"flex items-center justify-center w-full h-10 mt-2 bg-white text-sm border-[0.5px] border-gray-950 rounded-sm shadow-md",
-							searchParams.position && "bg-gray-950 text-white",
+							position && "bg-gray-950 text-white",
 						)}
 						onClick={handleLocationButtonClick}
 					>

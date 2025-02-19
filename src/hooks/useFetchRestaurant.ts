@@ -4,7 +4,7 @@ import useSWRInfinite from "swr/infinite";
 import type { Restaurant, SearchParams } from "~/types/restaurant";
 
 type Options = {
-	searchParams: SearchParams;
+	params: SearchParams;
 	pageSize: number;
 };
 
@@ -13,14 +13,14 @@ export type FetchRestaurantResponse = SWRInfiniteResponse<Restaurant, Error> & {
 };
 
 export const useFetchRestaurant = ({
-	searchParams,
+	params,
 	pageSize,
 }: Options): FetchRestaurantResponse => {
+	const { keyword, position } = params;
+
 	const [hasMore, setHasMore] = useState(true);
 
-	const { keyword, position } = searchParams;
-
-	const params = (() => {
+	const query = (() => {
 		if (keyword) {
 			return `large_area=Z011&keyword=${keyword}`;
 		}
@@ -37,7 +37,7 @@ export const useFetchRestaurant = ({
 			setHasMore(false);
 			return null;
 		}
-		return `/api/restaurants?${params}&start=${pageIndex * pageSize + 1}&count=${pageSize}`;
+		return `/api/restaurants?${query}&start=${pageIndex * pageSize + 1}&count=${pageSize}`;
 	};
 
 	const fetcher = (url: string): Promise<Restaurant> =>

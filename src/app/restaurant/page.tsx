@@ -26,51 +26,31 @@ export default function Page() {
 	const { scrollY } = useScroll();
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [searchParams, setSearchParams] = useState<SearchParams>({});
+	const [params, setParams] = useState<SearchParams>({});
 
 	const fetch = useFetchRestaurant({
 		pageSize: 10,
-		searchParams,
+		params,
 	});
 	const { isLoading, mutate } = fetch;
-
-	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-		const value = (event.target as HTMLInputElement).value;
-
-		if (event.key === "Enter") {
-			setSearchParams({ ...searchParams, keyword: value, position: undefined });
-			mutate();
-			setIsModalOpen(false);
-		}
-	};
-
-	const handleLocationButtonClick = () => {
-		if (searchParams.position) {
-			setSearchParams({ ...searchParams, position: undefined });
-			return;
-		}
-
-		navigator.geolocation.getCurrentPosition((position) =>
-			setSearchParams({ ...searchParams, keyword: "", position }),
-		);
-		mutate();
-	};
 
 	return (
 		<div className="flex flex-col items-center">
 			<CreditDisplay className="h-2 text-[6px] text-gray-600" />
-			<RestaurantList fetch={fetch} searchParams={searchParams} />
+			<RestaurantList fetch={fetch} searchParams={params} />
 
 			{!isLoading && (
 				<ChevronButton
 					className={clsx(
 						"fixed flex items-center justify-center z-30 left-2 bottom-8 w-12 h-12 bg-white text-gray-900 rounded-full shadow-lg",
 						isMobile &&
-							scrollY > 1000 &&
+							scrollY > 5000 &&
 							"bg-white/50 backdrop-blur-[6px] backdrop-contrast-[4]",
 					)}
 					style={
-						isMobile ? { opacity: scrollY < 1000 ? 1 - scrollY / 2000 : 1 } : {}
+						isMobile
+							? { opacity: scrollY < 5000 ? 1 - scrollY / 10000 : 1 }
+							: {}
 					}
 					isOpen={isModalOpen}
 					setIsOpen={setIsModalOpen}
@@ -82,12 +62,7 @@ export default function Page() {
 				setIsOpen={setIsModalOpen}
 				showOverlay={isMobile}
 			>
-				<SearchForm
-					searchParams={searchParams}
-					setSearchParams={setSearchParams}
-					handleKeyDown={handleKeyDown}
-					handleLocationButtonClick={handleLocationButtonClick}
-				/>
+				<SearchForm searchParams={params} setSearchParams={setParams} />
 			</Sidebar>
 		</div>
 	);
