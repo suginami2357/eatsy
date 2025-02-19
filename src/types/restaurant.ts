@@ -1,24 +1,24 @@
 export type SearchParams = {
 	// キーワード
-	keyword: string;
+	keyword?: string;
 	// コース
-	course: boolean;
+	course?: true;
 	// 飲み放題
-	free_drink: boolean;
+	free_drink?: true;
 	// 食べ放題
-	free_food: boolean;
+	free_food?: true;
 	// 個室
-	private_room: boolean;
+	private_room?: true;
 	// クレジット決済可能
-	card: boolean;
+	card?: true;
 	// 禁煙席
-	non_smoking: boolean;
+	non_smoking?: true;
 	// ランチ
-	lunch: boolean;
+	lunch?: true;
 	//子連れ歓迎
-	child: boolean;
+	child?: true;
 	// 現在地
-	position: GeolocationPosition | undefined;
+	position?: GeolocationPosition;
 };
 
 export type Restaurant = {

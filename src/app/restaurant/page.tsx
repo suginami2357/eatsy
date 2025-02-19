@@ -1,7 +1,7 @@
 "use client";
 import clsx from "clsx";
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BsFillCreditCardFill } from "react-icons/bs";
 import { BsSearch } from "react-icons/bs";
 import { FaCircleChevronRight, FaLocationDot } from "react-icons/fa6";
@@ -17,38 +17,18 @@ import SearchForm from "~/components/restaurants/SearchForm";
 import ChevronButton from "~/components/ui/chevron-button";
 import Sidebar from "~/components/ui/sidebar";
 import { useDevice } from "~/hooks/useDevice";
-import { useFetchRestaurants } from "~/hooks/useFetchRestaurants";
+import { useFetchRestaurant } from "~/hooks/useFetchRestaurant";
+import { useScroll } from "~/hooks/useScroll";
 import type { SearchParams } from "~/types/restaurant";
 
 export default function Page() {
 	const { isMobile } = useDevice();
+	const { scrollY } = useScroll();
 
-	const [hasMore, setHasMore] = useState(true);
-	const [scrollY, setScrollY] = useState(0);
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [searchParams, setSearchParams] = useState<SearchParams>({
-		keyword: "",
-		course: false,
-		free_drink: false,
-		free_food: false,
-		private_room: false,
-		card: false,
-		non_smoking: false,
-		lunch: false,
-		child: false,
-		position: undefined,
-	});
-	const { keyword, position } = searchParams;
+	const [searchParams, setSearchParams] = useState<SearchParams>({});
 
-	useEffect(() => {
-		const handleScroll = () => setScrollY(window.scrollY);
-		window.addEventListener("scroll", handleScroll);
-		handleScroll();
-		return () => window.removeEventListener("scroll", handleScroll);
-	}, []);
-
-	const fetch = useFetchRestaurants({
-		setHasMore,
+	const fetch = useFetchRestaurant({
 		pageSize: 10,
 		searchParams,
 	});
@@ -65,8 +45,8 @@ export default function Page() {
 	};
 
 	const handleLocationButtonClick = () => {
-		if (position) {
-			setSearchParams({ ...searchParams, keyword, position: undefined });
+		if (searchParams.position) {
+			setSearchParams({ ...searchParams, position: undefined });
 			return;
 		}
 
@@ -79,7 +59,7 @@ export default function Page() {
 	return (
 		<div className="flex flex-col items-center">
 			<CreditDisplay className="h-2 text-[6px] text-gray-600" />
-			<RestaurantList fetch={fetch} hasMore={hasMore} position={position} />
+			<RestaurantList fetch={fetch} searchParams={searchParams} />
 
 			{!isLoading && (
 				<ChevronButton

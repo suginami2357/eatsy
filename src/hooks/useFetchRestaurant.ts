@@ -1,17 +1,23 @@
+import { useState } from "react";
+import type { SWRInfiniteResponse } from "swr/infinite";
 import useSWRInfinite from "swr/infinite";
 import type { Restaurant, SearchParams } from "~/types/restaurant";
 
 type Options = {
-	setHasMore: React.Dispatch<React.SetStateAction<boolean>>;
-	pageSize: number;
 	searchParams: SearchParams;
+	pageSize: number;
 };
 
-export const useFetchRestaurants = ({
-	setHasMore,
-	pageSize,
+export type FetchRestaurantResponse = SWRInfiniteResponse<Restaurant, Error> & {
+	hasMore: boolean;
+};
+
+export const useFetchRestaurant = ({
 	searchParams,
-}: Options) => {
+	pageSize,
+}: Options): FetchRestaurantResponse => {
+	const [hasMore, setHasMore] = useState(true);
+
 	const { keyword, position } = searchParams;
 
 	const params = (() => {
@@ -37,5 +43,5 @@ export const useFetchRestaurants = ({
 	const fetcher = (url: string): Promise<Restaurant> =>
 		fetch(url).then((res) => res.json());
 
-	return useSWRInfinite<Restaurant>(getKey, fetcher);
+	return { ...useSWRInfinite<Restaurant>(getKey, fetcher), hasMore };
 };

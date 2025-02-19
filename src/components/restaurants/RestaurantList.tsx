@@ -3,23 +3,23 @@ import { IoLocationSharp } from "react-icons/io5";
 import { MdRestaurant } from "react-icons/md";
 import { TiLocationArrow } from "react-icons/ti";
 import InfiniteScroll from "react-infinite-scroll-component";
-import type { SWRInfiniteResponse } from "swr/infinite";
-import type { Restaurant } from "~/types/restaurant";
+import type { FetchRestaurantResponse } from "~/hooks/useFetchRestaurant";
+import type { SearchParams } from "~/types/restaurant";
 import { formatData, formatDistance } from "~/utils/restaurant";
 
 type RestaurantListProps = {
-	fetch: SWRInfiniteResponse<Restaurant, Error>;
-	hasMore: boolean;
-	position: GeolocationPosition | undefined;
+	fetch: FetchRestaurantResponse;
+	searchParams: SearchParams;
 };
 
 export default function RestaurantList({
 	fetch,
-	hasMore,
-	position,
+	searchParams,
 }: RestaurantListProps) {
-	const { data: restaurants, size, setSize, isLoading } = fetch;
+	const { data: restaurants, size, setSize, isLoading, hasMore } = fetch;
 	const data = formatData(restaurants);
+
+	const { position } = searchParams;
 
 	return (
 		<InfiniteScroll
