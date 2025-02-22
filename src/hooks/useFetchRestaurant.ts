@@ -16,20 +16,27 @@ export const useFetchRestaurant = ({
 	params,
 	pageSize,
 }: Options): FetchRestaurantResponse => {
-	const { keyword, position } = params;
+	const { keyword, position, ...rest } = params;
 
 	const [hasMore, setHasMore] = useState(true);
 
 	const query = (() => {
+		let result = "large_area=Z011";
+
 		if (keyword) {
-			return `large_area=Z011&keyword=${keyword}`;
+			result += `large_area=Z011&keyword=${keyword}`;
 		}
 
 		if (position) {
-			return `lat=${position.coords.latitude}&lng=${position.coords.longitude}&range=5`;
+			result += `lat=${position.coords.latitude}&lng=${position.coords.longitude}&range=5`;
 		}
 
-		return "large_area=Z011";
+		result += Object.entries(rest)
+			.filter(([, value]) => value)
+			.map(([key]) => `&${key}=1`)
+			.join("");
+
+		return result;
 	})();
 
 	const getKey = (pageIndex: number, previousPageData: Restaurant | null) => {

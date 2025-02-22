@@ -51,15 +51,17 @@ export default function SearchForm({
 	};
 
 	const values = [
-		{ value: "private_room", label: "個室" },
 		{ value: "course", label: "コース" },
+		{ value: "private_room", label: "個室" },
 		{ value: "child", label: "子連れ歓迎" },
 		{ value: "lunch", label: "ランチ" },
-		{ value: "_", label: "喫煙" },
-		{ value: "non_smoking", label: "禁煙" },
+		{ value: "charter", label: "貸切" },
+		{ value: "parking", label: "駐車場あり" },
 		{ value: "card", label: "クレカ決済" },
-		{ value: "free_drink", label: "食べ放題" },
 		{ value: "free_food", label: "飲み放題" },
+		{ value: "free_drink", label: "食べ放題" },
+		// { value: "_", label: "喫煙" },
+		// { value: "non_smoking", label: "禁煙" },
 	];
 
 	return (
@@ -90,10 +92,10 @@ export default function SearchForm({
 								key={value}
 								type="button"
 								className={clsx(
-									"flex items-center justify-center h-10 border-[0.5px] border-gray-950 rounded-sm shadow-md",
+									"flex items-center justify-center h-10 border-[0.5px] rounded-sm shadow-md",
 									searchParams[value as keyof SearchParams]
-										? "bg-gray-900 text-white"
-										: "bg-white",
+										? "bg-gray-950 text-white border-white opacity-90"
+										: "bg-white border-gray-950",
 								)}
 								onClick={() =>
 									setSearchParams({
@@ -105,95 +107,6 @@ export default function SearchForm({
 								{label}
 							</button>
 						))}
-						{/* <button
-							type="button"
-							className={clsx(
-								"flex items-center justify-center h-10 border-[0.5px] border-gray-950 rounded-sm shadow-md",
-								private_room ? "bg-gray-900 text-white" : "bg-white",
-							)}
-						>
-							個室
-						</button>
-						<button
-							type="button"
-							className={clsx(
-								"flex items-center justify-center h-10 border-[0.5px] border-gray-950 rounded-sm shadow-md",
-								course ? "bg-gray-900 text-white" : "bg-white",
-							)}
-						>
-							コース
-						</button>
-						<button
-							type="button"
-							className={clsx(
-								"flex items-center justify-center h-10 border-[0.5px] border-gray-950 rounded-sm shadow-md",
-								child ? "bg-gray-900 text-white" : "bg-white",
-							)}
-						>
-							子連れ歓迎
-						</button>
-
-						<button
-							type="button"
-							className={clsx(
-								"flex items-center justify-center h-10 border-[0.5px] border-gray-950 rounded-sm shadow-md",
-								lunch ? "bg-gray-900 text-white" : "bg-white",
-							)}
-						>
-							ランチ
-						</button>
-						<button
-							type="button"
-							className={clsx(
-								"flex items-center justify-center h-10 border-[0.5px] border-gray-950 rounded-sm shadow-md",
-								// action ? "bg-gray-900 text-white" : "bg-white",
-							)}
-						>
-							喫煙
-						</button>
-						<button
-							type="button"
-							className={clsx(
-								"flex items-center justify-center h-10 border-[0.5px] border-gray-950 rounded-sm shadow-md",
-								non_smoking ? "bg-gray-900 text-white" : "bg-white",
-							)}
-						>
-							禁煙
-						</button>
-
-						<button
-							type="button"
-							className={clsx(
-								"flex items-center justify-center h-10 border-[0.5px] border-gray-950 rounded-sm shadow-md",
-								card ? "bg-gray-900 text-white" : "bg-white",
-							)}
-						>
-							クレカ決済
-						</button>
-						<button
-							type="button"
-							className={clsx(
-								"flex items-center justify-center h-10 border-[0.5px] border-gray-950 rounded-sm shadow-md",
-								free_drink ? "bg-gray-900 text-white" : "bg-white",
-							)}
-						>
-							食べ放題
-						</button>
-						<button
-							type="button"
-							className={clsx(
-								"flex items-center justify-center h-10 border-[0.5px] border-gray-950 rounded-sm shadow-md",
-								free_food ? "bg-gray-900 text-white" : "bg-white",
-							)}
-							onClick={() =>
-								setSearchParams({
-									...searchParams,
-									free_food: !free_food,
-								})
-							}
-						>
-							飲み放題
-						</button> */}
 					</div>
 
 					<button
