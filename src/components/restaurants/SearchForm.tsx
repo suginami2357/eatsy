@@ -52,16 +52,16 @@ export default function SearchForm({
 
 	const values = [
 		{ value: "course", label: "コース" },
-		{ value: "private_room", label: "個室" },
+		{ value: "non_smoking", label: "禁煙" },
 		{ value: "child", label: "子連れ歓迎" },
-		{ value: "lunch", label: "ランチ" },
-		{ value: "charter", label: "貸切" },
-		{ value: "parking", label: "駐車場あり" },
+
 		{ value: "card", label: "クレカ決済" },
+		{ value: "private_room", label: "個室" },
+		{ value: "parking", label: "駐車場あり" },
+
+		{ value: "lunch", label: "ランチ" },
 		{ value: "free_food", label: "飲み放題" },
 		{ value: "free_drink", label: "食べ放題" },
-		// { value: "_", label: "喫煙" },
-		// { value: "non_smoking", label: "禁煙" },
 	];
 
 	return (
