@@ -24,11 +24,11 @@ export const useFetchRestaurant = ({
 		let result = "large_area=Z011";
 
 		if (keyword) {
-			result += `large_area=Z011&keyword=${keyword}`;
+			result += `&keyword=${keyword}`;
 		}
 
 		if (position) {
-			result += `lat=${position.coords.latitude}&lng=${position.coords.longitude}&range=5`;
+			result += `&lat=${position.coords.latitude}&lng=${position.coords.longitude}&range=5`;
 		}
 
 		result += Object.entries(rest)

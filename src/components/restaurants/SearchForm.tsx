@@ -112,8 +112,10 @@ export default function SearchForm({
 					<button
 						type="button"
 						className={clsx(
-							"flex items-center justify-center w-full h-10 mt-2 bg-white text-sm border-[0.5px] border-gray-950 rounded-sm shadow-md",
-							position && "bg-gray-950 text-white",
+							"flex items-center justify-center w-full h-10 mt-2 text-sm border-[0.5px] rounded-sm shadow-md",
+							position
+								? "bg-gray-950 text-white border-white opacity-90"
+								: "bg-white border-gray-950",
 						)}
 						onClick={handleLocationButtonClick}
 					>
