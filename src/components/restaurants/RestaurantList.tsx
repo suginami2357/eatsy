@@ -23,7 +23,7 @@ export default function RestaurantList({
 
 	return (
 		<InfiniteScroll
-			dataLength={data?.length || 0}
+			dataLength={data.length}
 			next={() => setSize(size + 1)}
 			hasMore={hasMore}
 			loader={

@@ -50,5 +50,13 @@ export const useFetchRestaurant = ({
 	const fetcher = (url: string): Promise<Restaurant> =>
 		fetch(url).then((res) => res.json());
 
-	return { ...useSWRInfinite<Restaurant>(getKey, fetcher), hasMore };
+	const response = useSWRInfinite<Restaurant>(getKey, fetcher);
+
+	// 最初のページでデータがない場合、hasMore を false にする
+	// これにより、InfiniteScroll が最初のページでロードされない
+	if (hasMore && !response.data?.[0]?.results.shop.length) {
+		setHasMore(false);
+	}
+
+	return { ...response, hasMore };
 };
