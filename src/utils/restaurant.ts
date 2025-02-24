@@ -1,10 +1,10 @@
 import * as turf from "@turf/turf";
-import type { Restaurant } from "~/types/restaurant";
+import type { Restaurant, Shop } from "~/types/restaurant";
 
-export function formatData(restaurants: Restaurant[] | undefined) {
+export function formatData(restaurants: Restaurant[] | undefined): Shop[] {
 	if (!restaurants) return [];
 
-	return restaurants
+	const result = restaurants
 		.flatMap((x) => x.results.shop)
 		.map((item) => {
 			return {
@@ -19,6 +19,7 @@ export function formatData(restaurants: Restaurant[] | undefined) {
 			};
 		})
 		.filter((x) => Object.values(x).every((value) => value !== undefined));
+	return result;
 }
 
 function formatGenre(value: {

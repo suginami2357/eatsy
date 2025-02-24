@@ -196,3 +196,17 @@ export type Restaurant = {
 		}[];
 	};
 };
+
+export type Shop = Omit<
+	Restaurant["results"]["shop"][number],
+	"budget" | "mobile_access" | "card" | "non_smoking"
+> & {
+	budget: {
+		code: string;
+		name: string;
+		average: number;
+	};
+	mobile_access: string | undefined;
+	card: string | undefined;
+	non_smoking: string | undefined;
+};
