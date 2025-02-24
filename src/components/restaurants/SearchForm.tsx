@@ -8,6 +8,7 @@ type SearchFormProps = {
 	searchParams: SearchParams;
 	/**  */
 	setSearchParams: (params: SearchParams) => void;
+	setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	/** 入力フィールドでキーボードのキーが押されたときに呼び出される関数 */
 	// handleKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 	// /** 現在地ボタンがクリックされたときに呼び出される関数 */
@@ -17,6 +18,7 @@ type SearchFormProps = {
 export default function SearchForm({
 	searchParams,
 	setSearchParams,
+	setIsModalOpen,
 }: SearchFormProps) {
 	const {
 		keyword,
@@ -33,10 +35,10 @@ export default function SearchForm({
 
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
 		const value = (event.target as HTMLInputElement).value;
+		if (event.key !== "Enter") return;
 
-		if (event.key === "Enter") {
-			setSearchParams({ ...searchParams, keyword: value, position: undefined });
-		}
+		setSearchParams({ ...searchParams, keyword: value, position: undefined });
+		setIsModalOpen(false);
 	};
 
 	const handleLocationButtonClick = () => {

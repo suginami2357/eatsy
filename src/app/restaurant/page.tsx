@@ -62,7 +62,11 @@ export default function Page() {
 				setIsOpen={setIsModalOpen}
 				showOverlay={isMobile}
 			>
-				<SearchForm searchParams={params} setSearchParams={setParams} />
+				<SearchForm
+					searchParams={params}
+					setSearchParams={setParams}
+					setIsModalOpen={setIsModalOpen}
+				/>
 			</Sidebar>
 		</div>
 	);
