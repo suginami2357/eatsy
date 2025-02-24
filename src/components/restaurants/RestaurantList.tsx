@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { IoMdRestaurant } from "react-icons/io";
 import { IoLocationSharp } from "react-icons/io5";
 import { MdRestaurant } from "react-icons/md";
 import { TiLocationArrow } from "react-icons/ti";
@@ -17,9 +18,25 @@ export default function RestaurantList({
 	searchParams,
 }: RestaurantListProps) {
 	const { data: restaurants, size, setSize, isLoading, hasMore } = fetch;
+	const { position } = searchParams;
+
 	const data = formatData(restaurants);
 
-	const { position } = searchParams;
+	if (!isLoading && !data.length) {
+		return (
+			<div className="flex items-center justify-center w-[100dvw] h-[calc(100dvh-8px)]">
+				<div className="flex flex-col items-center justify-center w-full h-full max-w-md gap-4 shadow-md">
+					<IoMdRestaurant
+						size={120}
+						className="p-3 bg-gray-300 text-white rounded-full"
+					/>
+					<span className="text-gray-400 text-lg">
+						お店が見つかりませんでした。
+					</span>
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<InfiniteScroll
@@ -38,7 +55,7 @@ export default function RestaurantList({
 				</div>
 			}
 		>
-			{data?.map((x, index) => (
+			{data.map((x, index) => (
 				<div
 					key={x.id}
 					className={clsx(

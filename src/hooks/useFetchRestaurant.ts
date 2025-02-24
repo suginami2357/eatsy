@@ -54,7 +54,11 @@ export const useFetchRestaurant = ({
 
 	// 最初のページでデータがない場合、hasMore を false にする
 	// これにより、InfiniteScroll が最初のページでロードされない
-	if (hasMore && !response.data?.[0]?.results.shop.length) {
+	if (
+		hasMore &&
+		!response.isLoading &&
+		!response.data?.[0]?.results.shop.length
+	) {
 		setHasMore(false);
 	}
 
