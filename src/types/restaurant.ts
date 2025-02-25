@@ -210,3 +210,16 @@ export type Shop = Omit<
 	card: string | undefined;
 	non_smoking: string | undefined;
 };
+
+export type Genre = {
+	results: {
+		api_version: string;
+		results_available: number;
+		results_returned: string;
+		results_start: number;
+		genre: {
+			code: string;
+			name: string;
+		}[];
+	};
+};

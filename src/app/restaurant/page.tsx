@@ -1,7 +1,7 @@
 "use client";
 import clsx from "clsx";
 import type React from "react";
-import { useState } from "react";
+import { use, useState } from "react";
 import { BsFillCreditCardFill } from "react-icons/bs";
 import { BsSearch } from "react-icons/bs";
 import { FaCircleChevronRight, FaLocationDot } from "react-icons/fa6";
@@ -17,6 +17,7 @@ import SearchForm from "~/components/restaurants/SearchForm";
 import ChevronButton from "~/components/ui/chevron-button";
 import Sidebar from "~/components/ui/sidebar";
 import { useDevice } from "~/hooks/useDevice";
+import { useFetchGenre } from "~/hooks/useFetchGenre";
 import { useFetchRestaurant } from "~/hooks/useFetchRestaurant";
 import { useScroll } from "~/hooks/useScroll";
 import type { SearchParams } from "~/types/restaurant";
@@ -33,6 +34,9 @@ export default function Page() {
 		params,
 	});
 	const { isLoading, mutate } = fetch;
+
+	const genre = useFetchGenre();
+	console.log(genre.data);
 
 	return (
 		<div className="flex flex-col items-center">
