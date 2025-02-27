@@ -1,6 +1,8 @@
 export type SearchParams = {
 	// キーワード
 	keyword?: string;
+	// ジャンル
+	genre: string[];
 	// コース
 	course?: boolean;
 	// 飲み放題
@@ -17,11 +19,11 @@ export type SearchParams = {
 	lunch?: boolean;
 	//子連れ歓迎
 	child?: boolean;
-	// 現在地
+	// 位置情報
 	position?: GeolocationPosition;
 };
 
-export type Restaurant = {
+export type RestaurantResponse = {
 	results: {
 		// APIのバージョン
 		api_version: string;
@@ -77,7 +79,7 @@ export type Restaurant = {
 			lng: number;
 			// お店ジャンル
 			genre: {
-				catch: string;
+				// catch: string;
 				code: string;
 				name: string;
 			};
@@ -198,7 +200,7 @@ export type Restaurant = {
 };
 
 export type Shop = Omit<
-	Restaurant["results"]["shop"][number],
+	RestaurantResponse["results"]["shop"][number],
 	"budget" | "mobile_access" | "card" | "non_smoking"
 > & {
 	budget: {
@@ -211,7 +213,7 @@ export type Shop = Omit<
 	non_smoking: string | undefined;
 };
 
-export type Genre = {
+export type GenreResponse = {
 	results: {
 		api_version: string;
 		results_available: number;

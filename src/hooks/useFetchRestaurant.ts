@@ -1,14 +1,17 @@
 import { useState } from "react";
 import type { SWRInfiniteResponse } from "swr/infinite";
 import useSWRInfinite from "swr/infinite";
-import type { Restaurant, SearchParams } from "~/types/restaurant";
+import type { RestaurantResponse, SearchParams } from "~/types/restaurant";
 
 type Options = {
 	params: SearchParams;
 	pageSize: number;
 };
 
-export type FetchRestaurantResponse = SWRInfiniteResponse<Restaurant, Error> & {
+export type FetchRestaurantResponse = SWRInfiniteResponse<
+	RestaurantResponse,
+	Error
+> & {
 	hasMore: boolean;
 };
 
@@ -16,7 +19,7 @@ export const useFetchRestaurant = ({
 	params,
 	pageSize,
 }: Options): FetchRestaurantResponse => {
-	const { keyword, position, ...rest } = params;
+	const { keyword, genre, position, ...rest } = params;
 
 	const [hasMore, setHasMore] = useState(true);
 
@@ -26,6 +29,10 @@ export const useFetchRestaurant = ({
 		if (keyword) {
 			result += `&keyword=${keyword}`;
 		}
+
+		// if (genre.length) {
+		// 	result += `&genre=${genre}`;
+		// }
 
 		if (position) {
 			result += `&lat=${position.coords.latitude}&lng=${position.coords.longitude}&range=5`;
@@ -39,7 +46,10 @@ export const useFetchRestaurant = ({
 		return result;
 	})();
 
-	const getKey = (pageIndex: number, previousPageData: Restaurant | null) => {
+	const getKey = (
+		pageIndex: number,
+		previousPageData: RestaurantResponse | null,
+	) => {
 		if (previousPageData && !previousPageData.results.shop.length) {
 			setHasMore(false);
 			return null;
@@ -47,10 +57,10 @@ export const useFetchRestaurant = ({
 		return `/api/restaurants?${query}&start=${pageIndex * pageSize + 1}&count=${pageSize}`;
 	};
 
-	const fetcher = (url: string): Promise<Restaurant> =>
+	const fetcher = (url: string): Promise<RestaurantResponse> =>
 		fetch(url).then((res) => res.json());
 
-	const response = useSWRInfinite<Restaurant>(getKey, fetcher);
+	const response = useSWRInfinite<RestaurantResponse>(getKey, fetcher);
 
 	// 最初のページでデータがない場合、hasMore を false にする
 	// これにより、InfiniteScroll が最初のページでロードされない

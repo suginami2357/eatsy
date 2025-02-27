@@ -1,7 +1,9 @@
 import * as turf from "@turf/turf";
-import type { Restaurant, Shop } from "~/types/restaurant";
+import type { RestaurantResponse, Shop } from "~/types/restaurant";
 
-export function formatData(restaurants: Restaurant[] | undefined): Shop[] {
+export function formatData(
+	restaurants: RestaurantResponse[] | undefined,
+): Shop[] {
 	if (!restaurants) return [];
 
 	const result = restaurants
@@ -22,17 +24,19 @@ export function formatData(restaurants: Restaurant[] | undefined): Shop[] {
 	return result;
 }
 
-function formatGenre(value: {
+export function formatGenre(value: {
 	code: string;
 	name: string;
-	catch: string;
+	// catch?: string;
 }) {
 	return {
 		code: value.code,
 		name: value.name
+			.replace("焼肉・ホルモン", "焼肉")
+			.replace("アジア・エスニック料理", "エスニック")
 			.split("・")
 			.reduce((a, b) => (a.length > b.length ? a : b)),
-		catch: value.catch,
+		// catch: value.catch,
 	};
 }
 

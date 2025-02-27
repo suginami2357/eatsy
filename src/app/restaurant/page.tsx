@@ -1,7 +1,7 @@
 "use client";
 import clsx from "clsx";
 import type React from "react";
-import { use, useState } from "react";
+import { useState } from "react";
 import { BsFillCreditCardFill } from "react-icons/bs";
 import { BsSearch } from "react-icons/bs";
 import { FaCircleChevronRight, FaLocationDot } from "react-icons/fa6";
@@ -27,16 +27,14 @@ export default function Page() {
 	const { scrollY } = useScroll();
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [params, setParams] = useState<SearchParams>({});
+	const [params, setParams] = useState<SearchParams>({ genre: [] });
 
+	const { data: genre } = useFetchGenre();
 	const fetch = useFetchRestaurant({
 		pageSize: 10,
 		params,
 	});
 	const { isLoading, mutate } = fetch;
-
-	const genre = useFetchGenre();
-	console.log(genre.data);
 
 	return (
 		<div className="flex flex-col items-center">
@@ -66,11 +64,14 @@ export default function Page() {
 				setIsOpen={setIsModalOpen}
 				showOverlay={isMobile}
 			>
-				<SearchForm
-					searchParams={params}
-					setSearchParams={setParams}
-					setIsModalOpen={setIsModalOpen}
-				/>
+				{genre && (
+					<SearchForm
+						fetch={genre}
+						searchParams={params}
+						setSearchParams={setParams}
+						setIsModalOpen={setIsModalOpen}
+					/>
+				)}
 			</Sidebar>
 		</div>
 	);
