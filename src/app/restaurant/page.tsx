@@ -27,7 +27,7 @@ export default function Page() {
 	const { scrollY } = useScroll();
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [params, setParams] = useState<SearchParams>({ genre: [] });
+	const [params, setParams] = useState<SearchParams>({ genres: [] });
 
 	const { data: genre } = useFetchGenre();
 	const fetch = useFetchRestaurant({
@@ -39,7 +39,7 @@ export default function Page() {
 	return (
 		<div className="flex flex-col items-center">
 			<CreditDisplay className="h-2 text-[6px] text-gray-600" />
-			<RestaurantList fetch={fetch} searchParams={params} />
+			<RestaurantList fetch={fetch} params={params} />
 
 			{!isLoading && (
 				<ChevronButton
@@ -67,7 +67,7 @@ export default function Page() {
 				{genre && (
 					<SearchForm
 						fetch={genre}
-						searchParams={params}
+						params={params}
 						setSearchParams={setParams}
 						setIsModalOpen={setIsModalOpen}
 					/>

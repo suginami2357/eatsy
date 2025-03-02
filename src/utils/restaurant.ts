@@ -1,7 +1,13 @@
 import * as turf from "@turf/turf";
-import type { RestaurantResponse, Shop } from "~/types/restaurant";
+import type { Label } from "~/types/label";
+import type {
+	RestaurantResponse,
+	SearchParams,
+	Shop,
+} from "~/types/restaurant";
 
 export function formatData(
+	params: SearchParams,
 	restaurants: RestaurantResponse[] | undefined,
 ): Shop[] {
 	if (!restaurants) return [];
@@ -11,7 +17,7 @@ export function formatData(
 		.map((item) => {
 			return {
 				...item,
-				genre: formatGenre(item.genre),
+				genre: formatGenre(params, item.genre, item.sub_genre),
 				card: formatCard(item.card),
 				station_name: formatStationName(item.station_name),
 				budget: formatBudget(item.budget),
@@ -24,11 +30,33 @@ export function formatData(
 	return result;
 }
 
-export function formatGenre(value: {
-	code: string;
-	name: string;
-	// catch?: string;
-}) {
+export function formatGenre(
+	params: SearchParams,
+	genre: Label,
+	sub_genre?: Label,
+) {
+	const { genres } = params;
+
+	const selectGenre = (
+		genres: Label[],
+		genre: Label,
+		sub_genre?: Label,
+	): Label => {
+		// サブジャンルがない場合はメインジャンルを使用
+		if (!sub_genre) return genre;
+
+		// メインジャンルが選択されている場合はそれを使用
+		if (genres.some((g) => g.code === genre.code)) return genre;
+
+		// サブジャンルが選択されている場合はそれを使用
+		if (genres.some((g) => g.code === sub_genre.code)) return sub_genre;
+
+		// どちらも選択されていない場合はメインジャンルを使用
+		return genre;
+	};
+
+	const value = selectGenre(genres, genre, sub_genre);
+
 	return {
 		code: value.code,
 		name: value.name
@@ -36,7 +64,6 @@ export function formatGenre(value: {
 			.replace("アジア・エスニック料理", "エスニック")
 			.split("・")
 			.reduce((a, b) => (a.length > b.length ? a : b)),
-		// catch: value.catch,
 	};
 }
 
@@ -54,11 +81,13 @@ function formatBudget(value: {
 		name: `～${Number(
 			value.name.replace("円", "").split("～")?.[1],
 		).toLocaleString()}円`,
-		average: Number(value.average),
+		average: value.average,
 	};
 }
 
-function formatMobileAccess(value: string): string | undefined {
+function formatMobileAccess(value: string | undefined): string | undefined {
+	if (value === undefined) return undefined;
+
 	let result = value;
 
 	// キーワードが含まれて無ければ "-" を返す
@@ -107,7 +136,7 @@ function formatOpen(value: string): string {
 	return value.replace(/\（.*?\）/g, "");
 }
 
-function formatCard(value: string): string | undefined {
+function formatCard(value: string | undefined): string | undefined {
 	switch (value) {
 		case "利用可":
 			return "カード決済可";
@@ -118,7 +147,7 @@ function formatCard(value: string): string | undefined {
 	}
 }
 
-function formatNonSmoking(value: string): string | undefined {
+function formatNonSmoking(value: string | undefined): string | undefined {
 	switch (value) {
 		case "禁煙席なし":
 			return "全席喫煙可";

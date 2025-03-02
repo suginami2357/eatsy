@@ -6,9 +6,7 @@ import { formatGenre } from "~/utils/restaurant";
 
 type SearchFormProps = {
 	fetch: GenreResponse;
-	/**  */
-	searchParams: SearchParams;
-	/**  */
+	params: SearchParams;
 	setSearchParams: (params: SearchParams) => void;
 	setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	/** 入力フィールドでキーボードのキーが押されたときに呼び出される関数 */
@@ -19,62 +17,30 @@ type SearchFormProps = {
 
 export default function SearchForm({
 	fetch,
-	searchParams,
+	params,
 	setSearchParams,
 	setIsModalOpen,
 }: SearchFormProps) {
-	const {
-		keyword,
-		genre,
-		course,
-		free_drink,
-		free_food,
-		private_room,
-		card,
-		non_smoking,
-		lunch,
-		child,
-		position,
-	} = searchParams;
+	const { keyword, genres, position } = params;
 
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
 		const value = (event.target as HTMLInputElement).value;
 		if (event.key !== "Enter") return;
 
-		setSearchParams({ ...searchParams, keyword: value, position: undefined });
+		setSearchParams({ ...params, keyword: value, position: undefined });
 		setIsModalOpen(false);
 	};
 
 	const handleLocationButtonClick = () => {
-		if (searchParams.position) {
-			setSearchParams({ ...searchParams, position: undefined });
+		if (params.position) {
+			setSearchParams({ ...params, position: undefined });
 			return;
 		}
 
 		navigator.geolocation.getCurrentPosition((position) =>
-			setSearchParams({ ...searchParams, keyword: "", position }),
+			setSearchParams({ ...params, keyword: "", position }),
 		);
 	};
-
-	const genres = fetch.results.genre
-		.filter((x) => !["G002", "G010", "G011", "G012", "G015"].includes(x.code))
-		.reverse()
-		.map((x) => formatGenre(x))
-		.map((x) => ({ value: x.code, label: x.name }));
-
-	const values = [
-		// { value: "non_smoking", label: "禁煙" },
-		// { value: "child", label: "子連れ歓迎" },
-		// { value: "parking", label: "駐車場あり" },
-
-		{ value: "card", label: "クレカ決済" },
-		{ value: "private_room", label: "個室" },
-		{ value: "course", label: "コース" },
-
-		{ value: "lunch", label: "ランチ" },
-		{ value: "free_food", label: "飲み放題" },
-		{ value: "free_drink", label: "食べ放題" },
-	];
 
 	return (
 		<div className="w-80 h-full bg-white shadow-lg">
@@ -99,45 +65,62 @@ export default function SearchForm({
 
 				<div className="flex flex-col gap-y-4">
 					<div className="grid grid-cols-3 gap-2 text-sm">
-						{genres.map(({ value, label }) => (
-							<button
-								key={value}
-								type="button"
-								className={clsx(
-									"flex items-center justify-center h-10 border-[0.5px] rounded-sm shadow-md",
-									searchParams[value as keyof SearchParams]
-										? "bg-gray-950 text-white border-white opacity-90"
-										: "bg-white border-gray-950",
-								)}
-								onClick={() => {
-									setSearchParams({
-										...searchParams,
-										genre: genre.includes(value)
-											? genre.filter((x) => x !== value)
-											: [...genre, value],
-									});
-								}}
-							>
-								{label}
-							</button>
-						))}
+						{fetch.results.genre
+							.filter(
+								(x) =>
+									!["G002", "G010", "G011", "G012", "G015"].includes(x.code),
+							)
+							.map((item) => (
+								<button
+									key={item.code}
+									type="button"
+									className={clsx(
+										"flex items-center justify-center h-10 border-[0.5px] rounded-sm shadow-md",
+										params.genres.some((x) => x.code === item.code)
+											? "bg-gray-950 text-white border-white opacity-90"
+											: "bg-white border-gray-950",
+									)}
+									onClick={() => {
+										setSearchParams({
+											...params,
+											genres: genres.some((x) => x.code === item.code)
+												? genres.filter((x) => x.code !== item.code)
+												: [...genres, item],
+										});
+									}}
+								>
+									{formatGenre(params, item).name}
+								</button>
+							))}
 					</div>
 
 					<div className="grid grid-cols-3 gap-2 text-sm">
-						{values.map(({ value, label }) => (
+						{[
+							// { value: "non_smoking", label: "禁煙" },
+							// { value: "child", label: "子連れ歓迎" },
+							// { value: "parking", label: "駐車場あり" },
+
+							{ value: "card", label: "クレカ決済" },
+							{ value: "private_room", label: "個室" },
+							{ value: "course", label: "コース" },
+
+							{ value: "lunch", label: "ランチ" },
+							{ value: "free_food", label: "飲み放題" },
+							{ value: "free_drink", label: "食べ放題" },
+						].map(({ value, label }) => (
 							<button
 								key={value}
 								type="button"
 								className={clsx(
 									"flex items-center justify-center h-10 border-[0.5px] rounded-sm shadow-md",
-									searchParams[value as keyof SearchParams]
+									params[value as keyof SearchParams]
 										? "bg-gray-950 text-white border-white opacity-90"
 										: "bg-white border-gray-950",
 								)}
 								onClick={() =>
 									setSearchParams({
-										...searchParams,
-										[value]: !searchParams[value as keyof SearchParams],
+										...params,
+										[value]: !params[value as keyof SearchParams],
 									})
 								}
 							>

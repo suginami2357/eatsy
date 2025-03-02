@@ -19,7 +19,7 @@ export const useFetchRestaurant = ({
 	params,
 	pageSize,
 }: Options): FetchRestaurantResponse => {
-	const { keyword, genre, position, ...rest } = params;
+	const { keyword, genres: genre, position, ...rest } = params;
 
 	const [hasMore, setHasMore] = useState(true);
 
@@ -30,18 +30,18 @@ export const useFetchRestaurant = ({
 			result += `&keyword=${keyword}`;
 		}
 
-		// if (genre.length) {
-		// 	result += `&genre=${genre}`;
-		// }
-
-		if (position) {
-			result += `&lat=${position.coords.latitude}&lng=${position.coords.longitude}&range=5`;
+		if (genre.length) {
+			result += genre.map((x) => `&genre=${x.code}`).join("");
 		}
 
 		result += Object.entries(rest)
 			.filter(([, value]) => value)
 			.map(([key]) => `&${key}=1`)
 			.join("");
+
+		if (position) {
+			result += `&lat=${position.coords.latitude}&lng=${position.coords.longitude}&range=5`;
+		}
 
 		return result;
 	})();

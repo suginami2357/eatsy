@@ -10,17 +10,14 @@ import { formatData, formatDistance } from "~/utils/restaurant";
 
 type RestaurantListProps = {
 	fetch: FetchRestaurantResponse;
-	searchParams: SearchParams;
+	params: SearchParams;
 };
 
-export default function RestaurantList({
-	fetch,
-	searchParams,
-}: RestaurantListProps) {
+export default function RestaurantList({ fetch, params }: RestaurantListProps) {
 	const { data: restaurants, size, setSize, isLoading, hasMore } = fetch;
-	const { position } = searchParams;
+	const { position } = params;
 
-	const data = formatData(restaurants);
+	const data = formatData(params, restaurants);
 
 	if (!isLoading && !data.length) {
 		return (
